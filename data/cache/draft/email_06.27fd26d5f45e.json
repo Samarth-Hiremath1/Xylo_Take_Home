@@ -1,0 +1,4 @@
+{
+  "draft": "Dear angryclient@protonmail.com,\n\nThank you for reaching out to us regarding a potential double charge. We understand your concern and are looking into this matter. As our records for your account are not immediately available for review, we will need a little time to investigate thoroughly. A member of our team will be in touch shortly to discuss this further.\n\nBest regards,\nThe Team",
+  "draft_rationale": "The client's status is 'churned or inactive', so the response adopts a re-engagement tone while acknowledging the billing issue and deferring specifics until a review is complete."
+}

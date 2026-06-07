@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-07T09:18:15.282Z",
+  "generatedAt": "2026-06-07T08:26:46.829Z",
   "model": "gemini-2.5-flash-lite",
   "counts": {
     "emails": 14,
@@ -53,7 +53,9 @@
         "sender_is_referral_not_client": false,
         "needs_review": false
       },
-      "reply_warranted": true
+      "reply_warranted": true,
+      "draft": "Dear Marcy,\n\nThank you for reaching out. We apologize for the delay in responding and understand your frustration. We are currently reviewing your request and will get back to you as soon as possible with an update on your paperwork.\n\nBest regards,\nThe Team",
+      "draft_rationale": "The client's email indicates a high urgency and a document request. Since there are no specific figures to verify and the firm has no recorded amount, the draft acknowledges the request and promises a follow-up without committing to any specific details or timelines."
     },
     {
       "email": {
@@ -103,7 +105,9 @@
         "sender_is_referral_not_client": false,
         "needs_review": false
       },
-      "reply_warranted": true
+      "reply_warranted": true,
+      "draft": "Dear Ray,\n\nThank you for reaching out regarding invoice #4471. We have received your email and are reviewing the total amount. Our records currently show a balance of $2400, and we will investigate the discrepancy you've noted. We will follow up with you shortly regarding this and your payment inquiry.\n\nBest regards, The Team",
+      "draft_rationale": "The flag contradicts_crm is true, so the draft acknowledges the client's message and notes a discrepancy with the firm's records rather than confirming the client's figure."
     },
     {
       "email": {
@@ -152,7 +156,9 @@
         "sender_is_referral_not_client": false,
         "needs_review": false
       },
-      "reply_warranted": true
+      "reply_warranted": true,
+      "draft": "Dear Tina,\n\nThank you for reaching out. We understand you need Q2 financial information urgently for a call today.\n\nWhile we are looking into this for you, we do not have a confirmed figure on file at this moment. We will review our records and aim to get this information to you as quickly as possible. Please note that any figures provided will be based on our verified records.\n\nBest regards,\nThe Team",
+      "draft_rationale": "The client's request for specific financial figures was not met because the firm has no recorded amount for this client, necessitating a conservative and non-committal response while emphasizing reliance on verified records."
     },
     {
       "email": {
@@ -199,7 +205,9 @@
         "sender_is_referral_not_client": false,
         "needs_review": false
       },
-      "reply_warranted": true
+      "reply_warranted": true,
+      "draft": "Dear J. Park,\n\nThank you for your email and for reviewing the proposal. We understand you'd like to adjust the start date to July due to a personal commitment.\n\nWe have noted your request and will confirm the revised start date shortly. Our records currently show a service amount of $6,500, and we will reconcile this with your proposal details as we move forward.\n\nBest regards,\nThe Team",
+      "draft_rationale": "The draft acknowledges the client's request to change the start date and notes the firm's recorded amount, avoiding confirmation of any figure from the client's email. It prioritizes the client's request to adjust the start date while adhering to the rule of not confirming unverified financial figures."
     },
     {
       "email": {
@@ -251,7 +259,9 @@
         "sender_is_referral_not_client": true,
         "needs_review": true
       },
-      "reply_warranted": true
+      "reply_warranted": true,
+      "draft": "Dear Sandra,\n\nThank you for referring Tom Becker to us. We have received his contact information and will reach out to him this week to discuss his bookkeeping needs.\n\nBest regards,\nThe Team\n\nINTERNAL NOTE: We will reach out to Tom Becker to discuss bookkeeping cleanup.",
+      "draft_rationale": "The sender is a referral, so the draft thanks the referrer and confirms outreach to the client. It avoids confirming any client-specific details as per the hard rules."
     },
     {
       "email": {
@@ -299,7 +309,9 @@
         "sender_is_referral_not_client": false,
         "needs_review": false
       },
-      "reply_warranted": true
+      "reply_warranted": true,
+      "draft": "Dear angryclient@protonmail.com,\n\nThank you for reaching out to us regarding a potential double charge. We understand your concern and are looking into this matter. As our records for your account are not immediately available for review, we will need a little time to investigate thoroughly. A member of our team will be in touch shortly to discuss this further.\n\nBest regards,\nThe Team",
+      "draft_rationale": "The client's status is 'churned or inactive', so the response adopts a re-engagement tone while acknowledging the billing issue and deferring specifics until a review is complete."
     },
     {
       "email": {
@@ -343,7 +355,9 @@
         "sender_is_referral_not_client": false,
         "needs_review": false
       },
-      "reply_warranted": true
+      "reply_warranted": true,
+      "draft": "Dear Bev,\n\nThank you for reaching out. We've checked our records and haven't yet received the policy documents. We'll look into this further and will reach out if we locate them or require anything further.\n\nBest regards,\nThe Team",
+      "draft_rationale": "The firm's records indicate that policy documents have not been received, so the draft politely acknowledges the client's query and states that the documents are still pending without confirming any figures or actions. The low urgency and lack of specific figures also support a conservative, non-committal response."
     },
     {
       "email": {
@@ -390,7 +404,9 @@
         "sender_is_referral_not_client": false,
         "needs_review": false
       },
-      "reply_warranted": true
+      "reply_warranted": true,
+      "draft": "Dear Carlos Morales,\n\nThank you for sending over the requested documents. We understand that the loan officer requires a P&L, balance sheet, and your last two years of returns by the end of the week. We are reviewing the information you've provided and will reach out if we have any questions or require further details. \n\nBest regards, The Team",
+      "draft_rationale": "The 'contradicts_crm' and 'referenced_invoice_or_amount_not_in_crm' flags were false, but the client's email did not contain a specific figure that needed to be addressed. The draft focuses on acknowledging the document request and confirming the firm's understanding of the requirements without repeating any unverified client figures."
     },
     {
       "email": {
@@ -440,7 +456,9 @@
         "sender_is_referral_not_client": false,
         "needs_review": false
       },
-      "reply_warranted": true
+      "reply_warranted": true,
+      "draft": "Dear Dwight,\n\nThank you for letting us know about the need to reschedule your meeting. We understand that jobsite demands can arise unexpectedly.\n\nWe will reach out to coordinate a new time for early next week, likely Monday or Tuesday morning, and will avoid Wednesday.\n\nBest regards,\nThe Team",
+      "draft_rationale": "The draft is grounded in the matched client 'Dwight S / Stella Roofing' and the detected intent 'scheduling'. The firm's recorded amount is absent, so the draft avoids confirming any financial figure. The draft offers to reschedule for early next week as requested, and proposes Monday or Tuesday mornings while noting the unavailability of Wednesday."
     },
     {
       "email": {
@@ -486,7 +504,9 @@
         "sender_is_referral_not_client": false,
         "needs_review": false
       },
-      "reply_warranted": true
+      "reply_warranted": true,
+      "draft": "Dear Priya,\n\nThank you for reaching out and for submitting the form. We apologize for the trouble with the EIN field submission; we've made a note of this error.\n\nWe have your information and will review it shortly. A member of our team will be in touch with next steps.\n\nBest regards,\nThe Team",
+      "draft_rationale": "The client reported a form submission error. The draft acknowledges the error and the client's message, states the firm is reviewing it, and promises a follow-up, aligning with the 'form submit error' firm note and the 'onboarding_lead' intent without confirming any unverified details."
     },
     {
       "email": {
@@ -534,7 +554,9 @@
         "sender_is_referral_not_client": false,
         "needs_review": false
       },
-      "reply_warranted": true
+      "reply_warranted": true,
+      "draft": "Hi Mike,\n\nThank you for your email. We've received your payment confirmation via Zelle for the March work and will process it accordingly. Our records currently show a balance of $1800 for this.\n\nRegarding the reports, they are typically sent at the end of the month. We will ensure you receive them promptly.\n\nBest regards,\nThe Team",
+      "draft_rationale": "The sender is the client and there are no flags that contradict the firm's records or require a conservative approach, so the draft confirms receipt of payment and provides information about the reports while stating the firm's recorded amount."
     },
     {
       "email": {
@@ -581,7 +603,9 @@
         "sender_is_referral_not_client": false,
         "needs_review": false
       },
-      "reply_warranted": true
+      "reply_warranted": true,
+      "draft": "Dear Ms. Whitaker,\n\nThank you for reaching out. We understand you are requesting a loss run for the Hendricks account going back five years.\n\nOur team is looking into this and will follow up with you shortly regarding the availability of this document.\n\nBest regards,\nThe Team",
+      "draft_rationale": "The client's stated amount was not confirmed as no amount was on file. The draft acknowledges the request and states a team member will follow up."
     },
     {
       "email": {
@@ -625,7 +649,9 @@
         "sender_is_referral_not_client": false,
         "needs_review": false
       },
-      "reply_warranted": true
+      "reply_warranted": true,
+      "draft": "Dear newlead2024@yahoo.com,\n\nThank you for reaching out and for your interest in our services. We do have experience working with dental practices and understand that managing bookkeeping for multi-location businesses can be complex, especially when there's a backlog.\n\nTo provide you with an accurate estimate, we'll need a bit more information about your specific needs and the scope of work involved. A member of our team will reach out to you shortly to discuss this further and answer any questions you may have.\n\nBest regards,\nThe Team",
+      "draft_rationale": "The draft is a conservative response due to the lead's status and lack of firm records, acknowledging their situation and indicating a follow-up without committing to costs or specific services."
     },
     {
       "email": {
@@ -672,7 +698,9 @@
         "sender_is_referral_not_client": false,
         "needs_review": false
       },
-      "reply_warranted": true
+      "reply_warranted": true,
+      "draft": "Dear Greg,\n\nThank you for reaching out. We understand you're looking for assistance with your bookkeeping and tax preparations before the October deadline, especially given your previous accountant's retirement. We do handle such transitions and can help organize your QuickBooks data.\n\nTo get started, we'd like to schedule a brief call to discuss your needs and how we can best support you. Please let us know what time works best for you.\n\nBest regards,\nThe Team",
+      "draft_rationale": "The draft addresses the client's stated need for onboarding and acknowledges the urgency due to the upcoming deadline and prior accountant's retirement. It aims for a warm, professional, and non-committal tone by focusing on scheduling a call rather than confirming figures or making specific commitments, given the client's informal data state."
     }
   ],
   "re_engage": [

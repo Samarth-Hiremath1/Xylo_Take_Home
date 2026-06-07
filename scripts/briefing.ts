@@ -14,7 +14,7 @@ import { join } from 'node:path';
 
 import { parseCrmCsv, parseEmailFile } from '../lib/normalize';
 import { matchAll, reverseUnmatched } from '../lib/matcher';
-import { adjudicateMatch, enrichEmail, MODEL } from '../lib/enrich';
+import { adjudicateMatch, draftReply, enrichEmail, MODEL } from '../lib/enrich';
 import { reconcile } from '../lib/reconcile';
 import type {
   Briefing,
@@ -46,6 +46,7 @@ async function main() {
   // 4-6. Enrich, adjudicate sub-HIGH, reconcile.
   const items: BriefingItem[] = [];
   let apiCalls = 0;
+  let deferredDrafts = 0;
 
   for (const email of emails) {
     const match = matches.find((m) => m.emailId === email.id)!;
@@ -77,6 +78,33 @@ async function main() {
 
     const flags = reconcile(match, client, enrichment);
 
+    // Reply drafting — only where a reply is warranted; grounded in the flags.
+    let draft: string | null = null;
+    let draft_rationale = 'No reply warranted; no draft generated.';
+    if (enrichment.reply_warranted) {
+      try {
+        const res = await draftReply(email, {
+          confidence: match.confidence,
+          flags,
+          client,
+          enrichment,
+        });
+        if (!res.fromCache) apiCalls++;
+        draft = res.draft.draft;
+        draft_rationale = res.draft.draft_rationale;
+        console.log(`  draft ${email.id}${res.fromCache ? ' (cache)' : ' (api)'}`);
+      } catch (err) {
+        // Don't let a quota/transient error discard the whole briefing — defer
+        // this one draft and continue. Re-running once quota resets fills it in.
+        draft = null;
+        draft_rationale =
+          'Reply warranted, but draft generation was deferred (Gemini error/quota). ' +
+          'Re-run `npm run briefing` to generate it.';
+        deferredDrafts++;
+        console.warn(`  draft ${email.id} DEFERRED: ${String((err as Error).message).slice(0, 80)}`);
+      }
+    }
+
     items.push({
       email: {
         id: email.id,
@@ -107,6 +135,8 @@ async function main() {
       entities: enrichment.entities,
       flags,
       reply_warranted: enrichment.reply_warranted,
+      draft,
+      draft_rationale,
     });
   }
 
@@ -144,15 +174,25 @@ async function main() {
     `\nWrote ${OUT}\n  ${briefing.counts.matched}/${briefing.counts.emails} matched, ` +
       `${briefing.counts.highConfidence} high-confidence, ` +
       `${briefing.counts.needsReview} need review, ` +
-      `${briefing.counts.reEngage} re-engage. (${apiCalls} live Gemini call(s))`,
+      `${briefing.counts.reEngage} re-engage. (${apiCalls} live Gemini call(s)` +
+      `${deferredDrafts ? `, ${deferredDrafts} draft(s) deferred` : ''})`,
   );
 
-  // 9. Print the hard cases for verification.
-  const show = (label: string, obj: unknown) =>
-    console.log(`\n========== ${label} ==========\n${JSON.stringify(obj, null, 2)}`);
-  show('email_02 (invoice dispute)', items.find((i) => i.email.id === 'email_02'));
-  show('email_05 (referral rescue)', items.find((i) => i.email.id === 'email_05'));
-  show('re_engage 1015 (Hank Olson)', reEngage.find((r) => r.clientId === '1015'));
+  // 9. Print the draft edge cases for verification.
+  const showDraft = (label: string, id: string) => {
+    const it = items.find((i) => i.email.id === id)!;
+    console.log(`\n========== ${label} ==========`);
+    console.log(`confidence: ${it.match.confidence} | needs_review: ${it.flags.needs_review}`);
+    console.log(
+      `flags: contradicts_crm=${it.flags.contradicts_crm}, ` +
+        `amount_not_in_crm=${it.flags.referenced_invoice_or_amount_not_in_crm}, ` +
+        `referral=${it.flags.sender_is_referral_not_client}`,
+    );
+    console.log(`\n--- draft ---\n${it.draft ?? '(none)'}`);
+    console.log(`\n--- draft_rationale ---\n${it.draft_rationale}`);
+  };
+  showDraft('email_02 — discrepancy case', 'email_02');
+  showDraft('email_05 — low-confidence referral', 'email_05');
 }
 
 main().catch((err) => {

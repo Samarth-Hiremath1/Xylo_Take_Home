@@ -1,0 +1,4 @@
+{
+  "draft": "Dear Dwight,\n\nThank you for letting us know about the need to reschedule your meeting. We understand that jobsite demands can arise unexpectedly.\n\nWe will reach out to coordinate a new time for early next week, likely Monday or Tuesday morning, and will avoid Wednesday.\n\nBest regards,\nThe Team",
+  "draft_rationale": "The draft is grounded in the matched client 'Dwight S / Stella Roofing' and the detected intent 'scheduling'. The firm's recorded amount is absent, so the draft avoids confirming any financial figure. The draft offers to reschedule for early next week as requested, and proposes Monday or Tuesday mornings while noting the unavailability of Wednesday."
+}

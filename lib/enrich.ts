@@ -11,9 +11,12 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type {
   Adjudication,
+  Confidence,
   CrmClient,
+  DraftResult,
   Enrichment,
   ParsedEmail,
+  ReconciliationFlags,
 } from './types';
 
 export const MODEL = 'gemini-2.5-flash-lite'; // cheapest current Flash; verified available
@@ -21,6 +24,7 @@ export const MODEL = 'gemini-2.5-flash-lite'; // cheapest current Flash; verifie
 const CACHE_ROOT = join(process.cwd(), 'data', 'cache');
 const ENRICH_DIR = join(CACHE_ROOT, 'enrich');
 const ADJUDICATE_DIR = join(CACHE_ROOT, 'adjudicate');
+const DRAFT_DIR = join(CACHE_ROOT, 'draft');
 
 const MIN_CALL_GAP_MS = Number(process.env.GEMINI_MIN_GAP_MS ?? 4500);
 const MAX_RETRIES = 5;
@@ -220,4 +224,97 @@ export async function adjudicateMatch(
   );
   writeCache(ADJUDICATE_DIR, key, adjudication);
   return { adjudication, fromCache: false };
+}
+
+// ---------- (c) reply drafting (grounded in reconciliation flags) ----------
+
+const DRAFT_SCHEMA = {
+  type: Type.OBJECT,
+  properties: {
+    draft: { type: Type.STRING },
+    draft_rationale: { type: Type.STRING },
+  },
+  required: ['draft', 'draft_rationale'],
+} as const;
+
+export interface DraftContext {
+  confidence: Confidence;
+  flags: ReconciliationFlags;
+  client: CrmClient | null;
+  enrichment: Enrichment;
+}
+
+function draftPrompt(email: ParsedEmail, ctx: DraftContext): string {
+  const { confidence, flags, client, enrichment } = ctx;
+  const belowHigh = confidence !== 'high';
+
+  return [
+    'You are drafting a reply on behalf of an accounting/bookkeeping firm to an',
+    'inbound email. This is a DRAFT for human review — it will NOT be auto-sent.',
+    '',
+    'Hard rules (always):',
+    '- Professional, concise, businesslike-but-warm.',
+    '- NEVER commit the firm to any financial figure or action you cannot verify',
+    "  from the firm's own records given below. Never repeat the client's quoted",
+    '  number back as if it were confirmed fact.',
+    '- Sign off generically (e.g. "Best regards, The Team") — do not invent a name.',
+    '',
+    'Reconciliation context — GROUND the draft in this, not just the email text:',
+    `- Matched client: ${
+      client
+        ? `${client.name ?? '(no name)'} / ${client.company ?? '(no company)'} (status: ${client.status}${client.statusUncertain ? '?' : ''})`
+        : '(unmatched / identity uncertain)'
+    }`,
+    `- Match confidence: ${confidence}${belowHigh ? ' (BELOW HIGH — be conservative)' : ''}`,
+    `- Firm's recorded amount for this client: ${client?.value != null ? `$${client.value}` : '(none on file)'}`,
+    `- Firm notes: ${client?.notes ?? '(none)'}`,
+    `- Detected intent / urgency: ${enrichment.intent} / ${enrichment.urgency}`,
+    '- Flags:',
+    `    contradicts_crm = ${flags.contradicts_crm}`,
+    `    referenced_invoice_or_amount_not_in_crm = ${flags.referenced_invoice_or_amount_not_in_crm}`,
+    `    needs_review = ${flags.needs_review}`,
+    `    sender_is_referral_not_client = ${flags.sender_is_referral_not_client}`,
+    `    status_churned_or_inactive = ${flags.status_churned_or_inactive}`,
+    '',
+    'Apply these, in priority order:',
+    '1. If contradicts_crm OR referenced_invoice_or_amount_not_in_crm: do NOT confirm',
+    "   or echo the client's figure as correct. Acknowledge their message, note that",
+    '   our records differ / the item is unconfirmed, and say we are reviewing it and/or',
+    "   ask them to confirm. You MAY state the firm's own recorded amount (above) as our",
+    "   record, but never validate the client's number.",
+    '2. If sender_is_referral_not_client: the SENDER is a referrer, NOT the client.',
+    '   Address the draft to the referrer (thank them; confirm we will reach out to the',
+    '   named client). Do NOT write a reply to the client and do NOT assume unverified',
+    '   client details. Append one line beginning "INTERNAL NOTE:" about reaching out to',
+    '   the actual client.',
+    '3. Else if needs_review or confidence below HIGH: keep it conservative and',
+    '   non-committal — acknowledge receipt and say a team member will follow up, without',
+    '   asserting unverified facts.',
+    '4. If status_churned_or_inactive: use a re-engagement tone (reconnect / welcome back),',
+    '   not business-as-usual.',
+    '',
+    'EMAIL:',
+    `From: ${email.fromRaw}`,
+    `Subject: ${email.subject}`,
+    '',
+    email.body,
+    '',
+    'Return:',
+    '- draft: the full draft reply text (include the INTERNAL NOTE line if rule 2 applies).',
+    '- draft_rationale: 1-2 sentences naming the governing flag/condition and the angle',
+    '  taken (e.g. "flagged discrepancy rather than confirming the $2,850 amount").',
+  ].join('\n');
+}
+
+export async function draftReply(
+  email: ParsedEmail,
+  ctx: DraftContext,
+): Promise<{ draft: DraftResult; fromCache: boolean }> {
+  const key = `${email.id}.${email.contentHash}`;
+  const cached = readCache<DraftResult>(DRAFT_DIR, key);
+  if (cached) return { draft: cached, fromCache: true };
+
+  const draft = await generateJson<DraftResult>(draftPrompt(email, ctx), DRAFT_SCHEMA);
+  writeCache(DRAFT_DIR, key, draft);
+  return { draft, fromCache: false };
 }

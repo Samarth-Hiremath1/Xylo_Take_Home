@@ -1,0 +1,4 @@
+{
+  "draft": "Dear Carlos Morales,\n\nThank you for sending over the requested documents. We understand that the loan officer requires a P&L, balance sheet, and your last two years of returns by the end of the week. We are reviewing the information you've provided and will reach out if we have any questions or require further details. \n\nBest regards, The Team",
+  "draft_rationale": "The 'contradicts_crm' and 'referenced_invoice_or_amount_not_in_crm' flags were false, but the client's email did not contain a specific figure that needed to be addressed. The draft focuses on acknowledging the document request and confirming the firm's understanding of the requirements without repeating any unverified client figures."
+}

@@ -1,0 +1,4 @@
+{
+  "draft": "Dear Priya,\n\nThank you for reaching out and for submitting the form. We apologize for the trouble with the EIN field submission; we've made a note of this error.\n\nWe have your information and will review it shortly. A member of our team will be in touch with next steps.\n\nBest regards,\nThe Team",
+  "draft_rationale": "The client reported a form submission error. The draft acknowledges the error and the client's message, states the firm is reviewing it, and promises a follow-up, aligning with the 'form submit error' firm note and the 'onboarding_lead' intent without confirming any unverified details."
+}

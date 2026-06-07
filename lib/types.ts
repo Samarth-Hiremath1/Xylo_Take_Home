@@ -113,6 +113,13 @@ export interface BriefingItem {
   entities: EnrichmentEntities;
   flags: ReconciliationFlags;
   reply_warranted: boolean;
+  draft: string | null; // null when no reply is warranted
+  draft_rationale: string;
+}
+
+export interface DraftResult {
+  draft: string;
+  draft_rationale: string;
 }
 
 export interface ReEngageItem {

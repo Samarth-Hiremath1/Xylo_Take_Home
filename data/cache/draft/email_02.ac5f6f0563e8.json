@@ -1,0 +1,4 @@
+{
+  "draft": "Dear Ray,\n\nThank you for reaching out regarding invoice #4471. We have received your email and are reviewing the total amount. Our records currently show a balance of $2400, and we will investigate the discrepancy you've noted. We will follow up with you shortly regarding this and your payment inquiry.\n\nBest regards, The Team",
+  "draft_rationale": "The flag contradicts_crm is true, so the draft acknowledges the client's message and notes a discrepancy with the firm's records rather than confirming the client's figure."
+}
