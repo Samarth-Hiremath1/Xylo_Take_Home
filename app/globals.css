@@ -3,25 +3,59 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f7f4ee;
+  /* layered warmth + a faint top glow, so the page has atmosphere, not flatness */
+  background-image:
+    radial-gradient(120% 80% at 50% -20%, rgba(35, 78, 66, 0.06), transparent 60%),
+    radial-gradient(90% 60% at 100% 0%, rgba(143, 90, 9, 0.04), transparent 55%);
+  background-attachment: fixed;
+  color: #211e18;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+/* Tabular figures for all numeric/stat surfaces. */
+.nums {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+::selection {
+  background: rgba(35, 78, 66, 0.15);
+}
+
+/* Restrained, refined scrollbars for the two-pane layout. */
+.scroll-quiet {
+  scrollbar-width: thin;
+  scrollbar-color: #d9d3c6 transparent;
+}
+.scroll-quiet::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+.scroll-quiet::-webkit-scrollbar-thumb {
+  background: #ddd7ca;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.scroll-quiet::-webkit-scrollbar-thumb:hover {
+  background: #cfc8b8;
+  background-clip: padding-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
   }
 }

@@ -122,6 +122,11 @@ export interface DraftResult {
   draft_rationale: string;
 }
 
+/** A briefing item joined with its full CRM record, for the detail view. */
+export interface ViewItem extends BriefingItem {
+  crm: CrmClient | null;
+}
+
 export interface ReEngageItem {
   clientId: string;
   name: string | null;
