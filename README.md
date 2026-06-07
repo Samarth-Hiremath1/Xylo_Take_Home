@@ -1,36 +1,111 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Morning Briefing
 
-## Getting Started
+A morning-briefing tool that triages an accounting firm's client inbox: it reconciles
+each inbound email against the CRM, flags what needs a human, and drafts grounded
+replies — so the firm's owner can clear the morning's triage in one screen.
 
-First, run the development server:
+**Live demo:** _<!-- TODO: paste Vercel URL here -->_
+
+---
+
+## Guided demo
+
+1. **Open the app.** You land on the morning briefing — every inbound email sorted by
+   urgency, with summary stats up top (emails to triage, high urgency, need review,
+   re-engage).
+2. **Click the invoice-dispute email** (Ray Delgado, "Question about invoice #4471").
+   The tool catches that the client's **$2,850 figure contradicts the $2,400 on file**
+   and that the **invoice isn't in the CRM** — so the draft reply surfaces the
+   discrepancy instead of confirming the client's number.
+3. **Click the Sandra Liu referral.** The sender isn't a client — she's referring
+   someone. The tool **routes the reply to the referrer**, rescues the actual client
+   (Tom Becker) via the phone number in the email body, and **flags him for review**
+   because the match is below high confidence.
+4. **Open the Re-engage tab** to see the reverse pass: CRM clients who sent nothing
+   this cycle (e.g. Hank Olson) surfaced so they don't slip through the cracks.
+
+---
+
+## Run locally
 
 ```bash
+git clone <this-repo>
+cd Xylo_Take_Home
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). **No API key is needed to run the
+app** — it renders the committed briefing.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Run the tests
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm test
+```
 
-## Learn More
+15 unit tests cover the pure logic (CRM/date/phone/status normalization, the email
+matcher including the referral rescue, and the draft-greeting cleanup).
 
-To learn more about Next.js, take a look at the following resources:
+## Regenerate the briefing (optional)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The dashboard reads a committed `data/briefing.json`, so **the app runs with no key**.
+You only need this step if you want to rebuild the briefing from the raw data.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+# .env.local (gitignored)
+GEMINI_API_KEY=your-gemini-api-key-here
 
-## Deploy on Vercel
+npm run briefing
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This writes `data/briefing.json`. Two honest caveats:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Caching means re-runs cost zero quota.** Every Gemini result is cached to
+  `data/cache/` keyed by email id + content hash, so a re-run with the cache present
+  makes **0 API calls**.
+- **The free Gemini tier caps at ~20 requests/day** for `gemini-2.5-flash-lite`. A full
+  cold regeneration (14 enrichments + 1 tie-break adjudication + ~14 draft replies)
+  lands right at that ceiling — which is **exactly why the output is cached and
+  committed**. Draft generation is also fault-tolerant: if a call hits the cap, that one
+  draft is deferred (not fatal) and a later re-run fills it from cache.
+
+---
+
+## How it's built
+
+- **Deterministic code does all the joins.** Normalization (emails, the 6 CRM date
+  formats, phones, statuses) and the tiered, confidence-scored matcher are plain
+  TypeScript — auditable, cheap, and fully reproducible. Every match records the signals
+  that produced it (e.g. `email exact + value 2400 corroborates`), shown in the UI.
+- **Gemini is used only for judgment** — intent, urgency, the one-line summary, reply
+  drafting, and tie-break adjudication on sub-high-confidence matches. The LLM never
+  performs a join. Drafts are grounded in the reconciliation flags (never confirm an
+  unverified figure; route referrals to the referrer; re-engagement tone for churned
+  clients).
+- **Results are cached for reproducibility** (`data/cache/`), committed alongside the
+  briefing so the demo is deterministic and keyless.
+- **15 unit tests** cover the pure logic.
+
+### Stack
+
+Next.js 14 (App Router) · TypeScript · Tailwind CSS · `@google/genai`
+(`gemini-2.5-flash-lite`). The UI is statically prerendered and makes **no live Gemini
+calls** — it only reads the committed briefing, so it deploys to Vercel zero-config with
+no environment variables.
+
+### Pipeline
+
+```
+emails/*.txt + crm_export.csv
+        │
+   normalize.ts        pure: parse + clean both sides
+        │
+   matcher.ts          pure: tiered, confidence-scored joins (+ reverse pass)
+        │
+   enrich.ts           Gemini (cached): intent, summary, adjudication, drafts
+        │
+   reconcile.ts        pure: compute flags
+        │
+   data/briefing.json  ← committed; the UI renders this
+```
