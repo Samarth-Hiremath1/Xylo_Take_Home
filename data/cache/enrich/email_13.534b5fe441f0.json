@@ -1,0 +1,12 @@
+{
+  "intent": "onboarding_lead",
+  "urgency": "medium",
+  "summary": "Inquiry about bookkeeping services for a dental practice.",
+  "entities": {
+    "amounts": [],
+    "ein": null,
+    "invoiceRefs": [],
+    "dates": []
+  },
+  "reply_warranted": true
+}

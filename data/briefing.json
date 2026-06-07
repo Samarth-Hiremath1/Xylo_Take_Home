@@ -1,0 +1,690 @@
+{
+  "generatedAt": "2026-06-07T09:18:15.282Z",
+  "model": "gemini-2.5-flash-lite",
+  "counts": {
+    "emails": 14,
+    "matched": 14,
+    "highConfidence": 13,
+    "needsReview": 1,
+    "reEngage": 1
+  },
+  "items": [
+    {
+      "email": {
+        "id": "email_01",
+        "from": "marcy h <marcyholt88@gmail.com>",
+        "senderEmail": "marcyholt88@gmail.com",
+        "senderName": "marcy h",
+        "subject": "re: still waiting",
+        "body": "hi - circling back AGAIN on the thing from last month. nobody has gotten back to me.\nthis is the second time i'm asking. can someone please just tell me where my paperwork\nis. getting frustrated tbh.\n- Marcy"
+      },
+      "match": {
+        "clientId": "1001",
+        "confidence": "high",
+        "signals": [
+          "email exact"
+        ],
+        "client": {
+          "clientId": "1001",
+          "name": "Marcy Holt",
+          "company": null,
+          "status": "active",
+          "statusUncertain": false
+        },
+        "adjudication": null
+      },
+      "intent": "document_request",
+      "urgency": "high",
+      "summary": "Client is asking for an update on her paperwork and is frustrated.",
+      "entities": {
+        "amounts": [],
+        "ein": null,
+        "invoiceRefs": [],
+        "dates": [
+          "last month"
+        ]
+      },
+      "flags": {
+        "unknown_sender": false,
+        "status_churned_or_inactive": false,
+        "referenced_invoice_or_amount_not_in_crm": false,
+        "contradicts_crm": false,
+        "rescued_via_phone": false,
+        "sender_is_referral_not_client": false,
+        "needs_review": false
+      },
+      "reply_warranted": true
+    },
+    {
+      "email": {
+        "id": "email_02",
+        "from": "\"Delgado, Ray\" <r.delgado@delgadohvac.net>",
+        "senderEmail": "r.delgado@delgadohvac.net",
+        "senderName": "Delgado, Ray",
+        "subject": "Question about invoice #4471",
+        "body": "Hey team,\nGot the invoice but the total looks off? I thought we agreed on the 2,400 number not\n2,850. Can you double check. Also do you take ACH now or still just cards\nthanks\nRay\nDelgado Heating & Air"
+      },
+      "match": {
+        "clientId": "1002",
+        "confidence": "high",
+        "signals": [
+          "email exact",
+          "value 2400 corroborates"
+        ],
+        "client": {
+          "clientId": "1002",
+          "name": "Ray Delgado",
+          "company": "Delgado Heating & Air",
+          "status": "active",
+          "statusUncertain": false
+        },
+        "adjudication": null
+      },
+      "intent": "billing_payment",
+      "urgency": "medium",
+      "summary": "Client has a question about invoice total and payment methods.",
+      "entities": {
+        "amounts": [
+          "2,400",
+          "2,850"
+        ],
+        "ein": null,
+        "invoiceRefs": [
+          "4471"
+        ],
+        "dates": []
+      },
+      "flags": {
+        "unknown_sender": false,
+        "status_churned_or_inactive": false,
+        "referenced_invoice_or_amount_not_in_crm": true,
+        "contradicts_crm": true,
+        "rescued_via_phone": false,
+        "sender_is_referral_not_client": false,
+        "needs_review": false
+      },
+      "reply_warranted": true
+    },
+    {
+      "email": {
+        "id": "email_03",
+        "from": "tina@brightpathbooks.com",
+        "senderEmail": "tina@brightpathbooks.com",
+        "senderName": null,
+        "subject": "URGENT need this today",
+        "body": "need the Q2 numbers pulled together for my 3pm call today. i know its short notice.\nwhatever you have is fine i just cant walk in empty handed. call my cell if easier\n651-555-0148"
+      },
+      "match": {
+        "clientId": "1003",
+        "confidence": "high",
+        "signals": [
+          "email exact",
+          "phone in body corroborates CRM phone",
+          "company \"BrightPath Books\" corroborates email domain"
+        ],
+        "client": {
+          "clientId": "1003",
+          "name": "Tina",
+          "company": "BrightPath Books",
+          "status": "prospect",
+          "statusUncertain": false
+        },
+        "adjudication": null
+      },
+      "intent": "document_request",
+      "urgency": "high",
+      "summary": "Client needs Q2 numbers for a call today.",
+      "entities": {
+        "amounts": [],
+        "ein": null,
+        "invoiceRefs": [],
+        "dates": [
+          "today",
+          "Q2"
+        ]
+      },
+      "flags": {
+        "unknown_sender": false,
+        "status_churned_or_inactive": false,
+        "referenced_invoice_or_amount_not_in_crm": false,
+        "contradicts_crm": false,
+        "rescued_via_phone": false,
+        "sender_is_referral_not_client": false,
+        "needs_review": false
+      },
+      "reply_warranted": true
+    },
+    {
+      "email": {
+        "id": "email_04",
+        "from": "jpark <jpark.realty@outlook.com>",
+        "senderEmail": "jpark.realty@outlook.com",
+        "senderName": "jpark",
+        "subject": "",
+        "body": "following up on the proposal. looks good overall. one thing - can we push the start to\njuly instead of june, kid's graduation stuff. lmk"
+      },
+      "match": {
+        "clientId": "1004",
+        "confidence": "high",
+        "signals": [
+          "email exact"
+        ],
+        "client": {
+          "clientId": "1004",
+          "name": "J. Park",
+          "company": "Park Realty",
+          "status": "prospect",
+          "statusUncertain": false
+        },
+        "adjudication": null
+      },
+      "intent": "onboarding_lead",
+      "urgency": "medium",
+      "summary": "Client wants to push the start date to July.",
+      "entities": {
+        "amounts": [],
+        "ein": null,
+        "invoiceRefs": [],
+        "dates": [
+          "july",
+          "june"
+        ]
+      },
+      "flags": {
+        "unknown_sender": false,
+        "status_churned_or_inactive": false,
+        "referenced_invoice_or_amount_not_in_crm": false,
+        "contradicts_crm": false,
+        "rescued_via_phone": false,
+        "sender_is_referral_not_client": false,
+        "needs_review": false
+      },
+      "reply_warranted": true
+    },
+    {
+      "email": {
+        "id": "email_05",
+        "from": "Sandra Liu <sliu@meridianadvisors.co>",
+        "senderEmail": "sliu@meridianadvisors.co",
+        "senderName": "Sandra Liu",
+        "subject": "New client referral - pls add",
+        "body": "Hi, referring a new client over. Name is Tom Becker, runs a small roofing outfit out of\nEagan. tom.becker at beckerroofing dot com, phone is somewhere around 612 555 0193 i think.\nHe wants help with the bookkeeping cleanup we talked about. Can you reach out this week?\nThanks!!\nSandra"
+      },
+      "match": {
+        "clientId": "1005",
+        "confidence": "medium",
+        "signals": [
+          "sender is a referral, not the client",
+          "phone match (6125550193) on CRM row with no email",
+          "phone in body corroborates CRM phone",
+          "company \"Becker Roofing\" corroborates email domain",
+          "gemini adjudication: agree (high) — The email explicitly mentions referring a new client, Tom Becker, who runs Becker Roofing, and provides a phone number that matches the CRM entry, strongly indicating a correct match."
+        ],
+        "client": {
+          "clientId": "1005",
+          "name": "Tom Becker",
+          "company": "Becker Roofing",
+          "status": "prospect",
+          "statusUncertain": false
+        },
+        "adjudication": {
+          "agree": true,
+          "confidence": "high",
+          "reason": "The email explicitly mentions referring a new client, Tom Becker, who runs Becker Roofing, and provides a phone number that matches the CRM entry, strongly indicating a correct match."
+        }
+      },
+      "intent": "onboarding_lead",
+      "urgency": "medium",
+      "summary": "Referral of new client Tom Becker for bookkeeping cleanup.",
+      "entities": {
+        "amounts": [],
+        "ein": null,
+        "invoiceRefs": [],
+        "dates": []
+      },
+      "flags": {
+        "unknown_sender": true,
+        "status_churned_or_inactive": false,
+        "referenced_invoice_or_amount_not_in_crm": false,
+        "contradicts_crm": false,
+        "rescued_via_phone": true,
+        "sender_is_referral_not_client": true,
+        "needs_review": true
+      },
+      "reply_warranted": true
+    },
+    {
+      "email": {
+        "id": "email_06",
+        "from": "angryclient@protonmail.com",
+        "senderEmail": "angryclient@protonmail.com",
+        "senderName": null,
+        "subject": "complaint",
+        "body": "this is ridiculous. i was charged twice. TWICE. i want a refund and i want to know how\nthis happened. if i dont hear back by friday im disputing the charge with my bank."
+      },
+      "match": {
+        "clientId": "1006",
+        "confidence": "high",
+        "signals": [
+          "email exact"
+        ],
+        "client": {
+          "clientId": "1006",
+          "name": null,
+          "company": null,
+          "status": "churned",
+          "statusUncertain": true
+        },
+        "adjudication": null
+      },
+      "intent": "billing_payment",
+      "urgency": "high",
+      "summary": "Client was charged twice and wants a refund.",
+      "entities": {
+        "amounts": [
+          "twice"
+        ],
+        "ein": null,
+        "invoiceRefs": [],
+        "dates": [
+          "friday"
+        ]
+      },
+      "flags": {
+        "unknown_sender": false,
+        "status_churned_or_inactive": true,
+        "referenced_invoice_or_amount_not_in_crm": false,
+        "contradicts_crm": false,
+        "rescued_via_phone": false,
+        "sender_is_referral_not_client": false,
+        "needs_review": false
+      },
+      "reply_warranted": true
+    },
+    {
+      "email": {
+        "id": "email_07",
+        "from": "\"Bev\" <bev.nguyen@gmail.com>",
+        "senderEmail": "bev.nguyen@gmail.com",
+        "senderName": "Bev",
+        "subject": "checking in :)",
+        "body": "hi hope you're doing well! no rush at all but whenever you get a sec, did the new\npolicy documents ever come through? i looked in my email and dont see them. might be in\nspam who knows lol. thanks so much!"
+      },
+      "match": {
+        "clientId": "1007",
+        "confidence": "high",
+        "signals": [
+          "email exact"
+        ],
+        "client": {
+          "clientId": "1007",
+          "name": "Bev Nguyen",
+          "company": null,
+          "status": "active",
+          "statusUncertain": false
+        },
+        "adjudication": null
+      },
+      "intent": "document_request",
+      "urgency": "low",
+      "summary": "Client is checking if policy documents were sent.",
+      "entities": {
+        "amounts": [],
+        "ein": null,
+        "invoiceRefs": [],
+        "dates": []
+      },
+      "flags": {
+        "unknown_sender": false,
+        "status_churned_or_inactive": false,
+        "referenced_invoice_or_amount_not_in_crm": false,
+        "contradicts_crm": false,
+        "rescued_via_phone": false,
+        "sender_is_referral_not_client": false,
+        "needs_review": false
+      },
+      "reply_warranted": true
+    },
+    {
+      "email": {
+        "id": "email_08",
+        "from": "carlos m <c.morales.contracting@gmail.com>",
+        "senderEmail": "c.morales.contracting@gmail.com",
+        "senderName": "carlos m",
+        "subject": "Fwd: docs",
+        "body": "see below, this is everything the bank asked for. let me know if you need anything else.\nattaching the 2023 and 2024 returns too once i find them.\n\n---------- Forwarded message ----------\nthe loan officer needs P&L, balance sheet, and last two years returns by EOW"
+      },
+      "match": {
+        "clientId": "1008",
+        "confidence": "high",
+        "signals": [
+          "email exact"
+        ],
+        "client": {
+          "clientId": "1008",
+          "name": "Carlos Morales",
+          "company": "Morales Contracting",
+          "status": "active",
+          "statusUncertain": false
+        },
+        "adjudication": null
+      },
+      "intent": "document_request",
+      "urgency": "medium",
+      "summary": "Client is requesting documents needed for a loan.",
+      "entities": {
+        "amounts": [],
+        "ein": null,
+        "invoiceRefs": [],
+        "dates": [
+          "2023",
+          "2024"
+        ]
+      },
+      "flags": {
+        "unknown_sender": false,
+        "status_churned_or_inactive": false,
+        "referenced_invoice_or_amount_not_in_crm": false,
+        "contradicts_crm": false,
+        "rescued_via_phone": false,
+        "sender_is_referral_not_client": false,
+        "needs_review": false
+      },
+      "reply_warranted": true
+    },
+    {
+      "email": {
+        "id": "email_09",
+        "from": "dwight.s@stellaroofing.com",
+        "senderEmail": "dwight.s@stellaroofing.com",
+        "senderName": null,
+        "subject": "cancel",
+        "body": "we need to cancel the meeting thursday something came up on a jobsite. can we do early\nnext week instead? mon or tues morning works. not wed."
+      },
+      "match": {
+        "clientId": "1009",
+        "confidence": "high",
+        "signals": [
+          "email exact",
+          "company \"Stella Roofing\" corroborates email domain"
+        ],
+        "client": {
+          "clientId": "1009",
+          "name": "Dwight S",
+          "company": "Stella Roofing",
+          "status": "active",
+          "statusUncertain": false
+        },
+        "adjudication": null
+      },
+      "intent": "scheduling",
+      "urgency": "medium",
+      "summary": "Client wants to reschedule a meeting.",
+      "entities": {
+        "amounts": [],
+        "ein": null,
+        "invoiceRefs": [],
+        "dates": [
+          "thursday",
+          "early next week",
+          "mon",
+          "tues morning"
+        ]
+      },
+      "flags": {
+        "unknown_sender": false,
+        "status_churned_or_inactive": false,
+        "referenced_invoice_or_amount_not_in_crm": false,
+        "contradicts_crm": false,
+        "rescued_via_phone": false,
+        "sender_is_referral_not_client": false,
+        "needs_review": false
+      },
+      "reply_warranted": true
+    },
+    {
+      "email": {
+        "id": "email_10",
+        "from": "priya.k <priya.kapoor@kapooraccounting.com>",
+        "senderEmail": "priya.kapoor@kapooraccounting.com",
+        "senderName": "priya.k",
+        "subject": "Re: Re: Re: onboarding",
+        "body": "ok i filled out the form but it wouldnt let me submit, kept saying the EIN field was\ninvalid? our EIN is 47-1839204. also you asked for prior bookkeeper contact - thats\njust me, i did it myself before this. anything else you need from me?"
+      },
+      "match": {
+        "clientId": "1010",
+        "confidence": "high",
+        "signals": [
+          "email exact",
+          "EIN 47-1839204 in body corroborates CRM notes",
+          "company \"Kapoor Accounting\" corroborates email domain"
+        ],
+        "client": {
+          "clientId": "1010",
+          "name": "Priya Kapoor",
+          "company": "Kapoor Accounting",
+          "status": "active",
+          "statusUncertain": false
+        },
+        "adjudication": null
+      },
+      "intent": "onboarding_lead",
+      "urgency": "medium",
+      "summary": "Client is having trouble submitting onboarding form due to invalid EIN.",
+      "entities": {
+        "amounts": [],
+        "ein": "47-1839204",
+        "invoiceRefs": [],
+        "dates": []
+      },
+      "flags": {
+        "unknown_sender": false,
+        "status_churned_or_inactive": false,
+        "referenced_invoice_or_amount_not_in_crm": false,
+        "contradicts_crm": false,
+        "rescued_via_phone": false,
+        "sender_is_referral_not_client": false,
+        "needs_review": false
+      },
+      "reply_warranted": true
+    },
+    {
+      "email": {
+        "id": "email_11",
+        "from": "mike <mike@twincitiesflooring.com>",
+        "senderEmail": "mike@twincitiesflooring.com",
+        "senderName": "mike",
+        "subject": "payment",
+        "body": "sent the payment via zelle this morning for the march work. lmk when it lands. also when\ndo we get the next set of reports, end of month? want to make sure im budgeting right"
+      },
+      "match": {
+        "clientId": "1011",
+        "confidence": "high",
+        "signals": [
+          "email exact",
+          "company \"Twin Cities Flooring\" corroborates email domain"
+        ],
+        "client": {
+          "clientId": "1011",
+          "name": "Mike",
+          "company": "Twin Cities Flooring",
+          "status": "active",
+          "statusUncertain": false
+        },
+        "adjudication": null
+      },
+      "intent": "billing_payment",
+      "urgency": "medium",
+      "summary": "Client sent payment and is asking about next reports.",
+      "entities": {
+        "amounts": [],
+        "ein": null,
+        "invoiceRefs": [],
+        "dates": [
+          "march",
+          "end of month"
+        ]
+      },
+      "flags": {
+        "unknown_sender": false,
+        "status_churned_or_inactive": false,
+        "referenced_invoice_or_amount_not_in_crm": false,
+        "contradicts_crm": false,
+        "rescued_via_phone": false,
+        "sender_is_referral_not_client": false,
+        "needs_review": false
+      },
+      "reply_warranted": true
+    },
+    {
+      "email": {
+        "id": "email_12",
+        "from": "\"Whitaker, Joan\" <jwhitaker@whitakeragency.com>",
+        "senderEmail": "jwhitaker@whitakeragency.com",
+        "senderName": "Whitaker, Joan",
+        "subject": "insurance question",
+        "body": "one of my carriers is asking for a loss run going back 5 years on the Hendricks account.\ndo you have that or do i need to pull it. honestly not even sure where it lives anymore.\nthis is the third carrier asking this month its exhausting"
+      },
+      "match": {
+        "clientId": "1012",
+        "confidence": "high",
+        "signals": [
+          "email exact",
+          "company \"Whitaker Agency\" corroborates email domain"
+        ],
+        "client": {
+          "clientId": "1012",
+          "name": "Joan Whitaker",
+          "company": "Whitaker Agency",
+          "status": "active",
+          "statusUncertain": false
+        },
+        "adjudication": null
+      },
+      "intent": "document_request",
+      "urgency": "medium",
+      "summary": "Requesting 5 years of loss runs for Hendricks account.",
+      "entities": {
+        "amounts": [],
+        "ein": null,
+        "invoiceRefs": [],
+        "dates": [
+          "5 years"
+        ]
+      },
+      "flags": {
+        "unknown_sender": false,
+        "status_churned_or_inactive": false,
+        "referenced_invoice_or_amount_not_in_crm": false,
+        "contradicts_crm": false,
+        "rescued_via_phone": false,
+        "sender_is_referral_not_client": false,
+        "needs_review": false
+      },
+      "reply_warranted": true
+    },
+    {
+      "email": {
+        "id": "email_13",
+        "from": "newlead2024@yahoo.com",
+        "senderEmail": "newlead2024@yahoo.com",
+        "senderName": null,
+        "subject": "hello",
+        "body": "saw your site. do you guys work with dental practices? we have 2 locations and our\nbooks are a mess, like a year behind. what would something like that cost roughly"
+      },
+      "match": {
+        "clientId": "1013",
+        "confidence": "high",
+        "signals": [
+          "email exact"
+        ],
+        "client": {
+          "clientId": "1013",
+          "name": null,
+          "company": null,
+          "status": "lead",
+          "statusUncertain": false
+        },
+        "adjudication": null
+      },
+      "intent": "onboarding_lead",
+      "urgency": "medium",
+      "summary": "Inquiry about bookkeeping services for a dental practice.",
+      "entities": {
+        "amounts": [],
+        "ein": null,
+        "invoiceRefs": [],
+        "dates": []
+      },
+      "flags": {
+        "unknown_sender": false,
+        "status_churned_or_inactive": false,
+        "referenced_invoice_or_amount_not_in_crm": false,
+        "contradicts_crm": false,
+        "rescued_via_phone": false,
+        "sender_is_referral_not_client": false,
+        "needs_review": false
+      },
+      "reply_warranted": true
+    },
+    {
+      "email": {
+        "id": "email_14",
+        "from": "greg <greg@gregsautobody.biz>",
+        "senderEmail": "greg@gregsautobody.biz",
+        "senderName": "greg",
+        "subject": "RE: tax stuff",
+        "body": "quick one - my accountant retired and i need someone to take over before the extension\ndeadline in oct. i have everything in a shoebox basically (quickbooks but havent touched\nit since feb). is that something you handle. dont judge me lol"
+      },
+      "match": {
+        "clientId": "1014",
+        "confidence": "high",
+        "signals": [
+          "email exact",
+          "company \"Greg's Auto Body\" corroborates email domain"
+        ],
+        "client": {
+          "clientId": "1014",
+          "name": "Greg",
+          "company": "Greg's Auto Body",
+          "status": "prospect",
+          "statusUncertain": false
+        },
+        "adjudication": null
+      },
+      "intent": "onboarding_lead",
+      "urgency": "medium",
+      "summary": "Client needs new accountant to handle tax filing before extension deadline.",
+      "entities": {
+        "amounts": [],
+        "ein": null,
+        "invoiceRefs": [],
+        "dates": [
+          "oct"
+        ]
+      },
+      "flags": {
+        "unknown_sender": false,
+        "status_churned_or_inactive": false,
+        "referenced_invoice_or_amount_not_in_crm": false,
+        "contradicts_crm": false,
+        "rescued_via_phone": false,
+        "sender_is_referral_not_client": false,
+        "needs_review": false
+      },
+      "reply_warranted": true
+    }
+  ],
+  "re_engage": [
+    {
+      "clientId": "1015",
+      "name": "Hank Olson",
+      "company": "Olson & Sons",
+      "status": "inactive",
+      "statusUncertain": false,
+      "lastContact": "2023-11-08",
+      "notes": "no response in 5 months",
+      "reason": "no inbound email; status inactive, last contact 2023-11-08 — no response in 5 months"
+    }
+  ]
+}

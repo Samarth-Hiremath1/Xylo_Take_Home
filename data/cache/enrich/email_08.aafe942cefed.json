@@ -1,0 +1,15 @@
+{
+  "intent": "document_request",
+  "urgency": "medium",
+  "summary": "Client is requesting documents needed for a loan.",
+  "entities": {
+    "amounts": [],
+    "ein": null,
+    "invoiceRefs": [],
+    "dates": [
+      "2023",
+      "2024"
+    ]
+  },
+  "reply_warranted": true
+}

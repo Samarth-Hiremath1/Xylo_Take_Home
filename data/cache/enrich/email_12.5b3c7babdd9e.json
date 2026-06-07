@@ -1,0 +1,14 @@
+{
+  "intent": "document_request",
+  "urgency": "medium",
+  "summary": "Requesting 5 years of loss runs for Hendricks account.",
+  "entities": {
+    "amounts": [],
+    "ein": null,
+    "invoiceRefs": [],
+    "dates": [
+      "5 years"
+    ]
+  },
+  "reply_warranted": true
+}

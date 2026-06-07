@@ -1,0 +1,12 @@
+{
+  "intent": "onboarding_lead",
+  "urgency": "medium",
+  "summary": "Referral of new client Tom Becker for bookkeeping cleanup.",
+  "entities": {
+    "amounts": [],
+    "ein": null,
+    "invoiceRefs": [],
+    "dates": []
+  },
+  "reply_warranted": true
+}

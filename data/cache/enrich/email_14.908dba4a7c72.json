@@ -1,0 +1,14 @@
+{
+  "intent": "onboarding_lead",
+  "urgency": "medium",
+  "summary": "Client needs new accountant to handle tax filing before extension deadline.",
+  "entities": {
+    "amounts": [],
+    "ein": null,
+    "invoiceRefs": [],
+    "dates": [
+      "oct"
+    ]
+  },
+  "reply_warranted": true
+}

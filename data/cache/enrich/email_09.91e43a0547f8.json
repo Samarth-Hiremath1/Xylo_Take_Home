@@ -1,0 +1,17 @@
+{
+  "intent": "scheduling",
+  "urgency": "medium",
+  "summary": "Client wants to reschedule a meeting.",
+  "entities": {
+    "amounts": [],
+    "ein": null,
+    "invoiceRefs": [],
+    "dates": [
+      "thursday",
+      "early next week",
+      "mon",
+      "tues morning"
+    ]
+  },
+  "reply_warranted": true
+}

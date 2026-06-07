@@ -1,0 +1,16 @@
+{
+  "intent": "billing_payment",
+  "urgency": "high",
+  "summary": "Client was charged twice and wants a refund.",
+  "entities": {
+    "amounts": [
+      "twice"
+    ],
+    "ein": null,
+    "invoiceRefs": [],
+    "dates": [
+      "friday"
+    ]
+  },
+  "reply_warranted": true
+}

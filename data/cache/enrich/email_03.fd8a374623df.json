@@ -1,0 +1,15 @@
+{
+  "intent": "document_request",
+  "urgency": "high",
+  "summary": "Client needs Q2 numbers for a call today.",
+  "entities": {
+    "amounts": [],
+    "ein": null,
+    "invoiceRefs": [],
+    "dates": [
+      "today",
+      "Q2"
+    ]
+  },
+  "reply_warranted": true
+}

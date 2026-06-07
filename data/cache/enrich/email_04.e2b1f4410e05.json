@@ -1,0 +1,15 @@
+{
+  "intent": "onboarding_lead",
+  "urgency": "medium",
+  "summary": "Client wants to push the start date to July.",
+  "entities": {
+    "amounts": [],
+    "ein": null,
+    "invoiceRefs": [],
+    "dates": [
+      "july",
+      "june"
+    ]
+  },
+  "reply_warranted": true
+}

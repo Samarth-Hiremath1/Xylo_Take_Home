@@ -1,0 +1,17 @@
+{
+  "intent": "billing_payment",
+  "urgency": "medium",
+  "summary": "Client has a question about invoice total and payment methods.",
+  "entities": {
+    "amounts": [
+      "2,400",
+      "2,850"
+    ],
+    "ein": null,
+    "invoiceRefs": [
+      "4471"
+    ],
+    "dates": []
+  },
+  "reply_warranted": true
+}

@@ -1,0 +1,15 @@
+{
+  "intent": "billing_payment",
+  "urgency": "medium",
+  "summary": "Client sent payment and is asking about next reports.",
+  "entities": {
+    "amounts": [],
+    "ein": null,
+    "invoiceRefs": [],
+    "dates": [
+      "march",
+      "end of month"
+    ]
+  },
+  "reply_warranted": true
+}

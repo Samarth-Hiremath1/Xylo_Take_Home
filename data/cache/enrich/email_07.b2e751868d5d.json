@@ -1,0 +1,12 @@
+{
+  "intent": "document_request",
+  "urgency": "low",
+  "summary": "Client is checking if policy documents were sent.",
+  "entities": {
+    "amounts": [],
+    "ein": null,
+    "invoiceRefs": [],
+    "dates": []
+  },
+  "reply_warranted": true
+}

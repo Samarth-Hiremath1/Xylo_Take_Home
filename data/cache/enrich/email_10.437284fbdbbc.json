@@ -1,0 +1,12 @@
+{
+  "intent": "onboarding_lead",
+  "urgency": "medium",
+  "summary": "Client is having trouble submitting onboarding form due to invalid EIN.",
+  "entities": {
+    "amounts": [],
+    "ein": "47-1839204",
+    "invoiceRefs": [],
+    "dates": []
+  },
+  "reply_warranted": true
+}
