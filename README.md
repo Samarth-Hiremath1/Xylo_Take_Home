@@ -4,7 +4,7 @@ A morning-briefing tool that triages an accounting firm's client inbox: it recon
 each inbound email against the CRM, flags what needs a human, and drafts grounded
 replies — so the firm's owner can clear the morning's triage in one screen.
 
-**Live demo:** _<!-- TODO: paste Vercel URL here -->_
+**Live demo:** https://xylo-take-home.vercel.app/
 
 ---
 
