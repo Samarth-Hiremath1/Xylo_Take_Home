@@ -109,3 +109,27 @@ emails/*.txt + crm_export.csv
         │
    data/briefing.json  ← committed; the UI renders this
 ```
+
+---
+
+## Multi-agent framework (forward path)
+
+The batch pipeline above is the shipped product. `lib/agents/` adds the framework
+for evolving it into a multi-agent platform, with each external integration (LLM,
+MCP tools, live financial sources) behind an interface so the default offline/mock
+implementation swaps cleanly for production.
+
+```
+Orchestrator        routes each email, fans out parallel agents, fans in results
+  ├─ Identity        ReAct loop over MCP-style tools → resolves ambiguous senders
+  ├─ Triage          intent / urgency / entities (grounded in the briefing)
+  ├─ Reconciliation  queries live sources (QuickBooks, invoices) → verdicts contradictions
+  ├─ Drafting        grounded reply from resolved identity + reconciliation
+  └─ Quality         lightweight review gate before anything reaches the owner
+```
+
+Run it: `npm run agents` (offline, no key) → writes `data/agent_run.json` and prints
+the full trace for email_02 (identity → live-source discrepancy `$2,850` vs `$2,400`
+→ routed to a human) and email_05 (ReAct phone-rescue of a referral → flagged).
+Swap points are typed: `Reasoner`/`ModelClient` (LLM-driven ReAct), `ToolRegistry`
+(real MCP servers), `LiveSources` (real QuickBooks/invoice APIs).

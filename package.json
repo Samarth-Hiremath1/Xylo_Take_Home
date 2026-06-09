@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "briefing": "tsx scripts/briefing.ts",
+    "agents": "tsx scripts/agents.ts",
     "test": "tsx --test tests/*.test.ts"
   },
   "dependencies": {
