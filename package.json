@@ -9,10 +9,13 @@
     "lint": "next lint",
     "briefing": "tsx scripts/briefing.ts",
     "agents": "tsx scripts/agents.ts",
+    "agents:langgraph": "tsx scripts/agents-langgraph.ts",
     "test": "tsx --test tests/*.test.ts"
   },
   "dependencies": {
     "@google/genai": "^2.8.0",
+    "@langchain/core": "^1.1.48",
+    "@langchain/langgraph": "^1.3.7",
     "next": "14.2.35",
     "react": "^18",
     "react-dom": "^18"

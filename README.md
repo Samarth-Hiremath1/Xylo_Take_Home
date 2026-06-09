@@ -133,3 +133,8 @@ the full trace for email_02 (identity → live-source discrepancy `$2,850` vs `$
 → routed to a human) and email_05 (ReAct phone-rescue of a referral → flagged).
 Swap points are typed: `Reasoner`/`ModelClient` (LLM-driven ReAct), `ToolRegistry`
 (real MCP servers), `LiveSources` (real QuickBooks/invoice APIs).
+
+The orchestrator is hand-rolled (zero agent-framework dependency, fully auditable).
+A **LangGraph** variant wiring the *same* agent classes as a `StateGraph`
+(fan-out → fan-in) is included for comparison — `npm run agents:langgraph` →
+`data/agent_run_langgraph.json`, identical verdicts.

@@ -1,0 +1,1484 @@
+{
+  "generatedAt": "2026-06-09T02:47:31.160Z",
+  "engine": "langgraph",
+  "mode": "offline-mock",
+  "agents": [
+    "orchestrator(StateGraph)",
+    "identity",
+    "triage",
+    "reconciliation",
+    "drafting",
+    "quality"
+  ],
+  "records": [
+    {
+      "emailId": "email_01",
+      "sender": "marcy h",
+      "identity": {
+        "clientId": "1001",
+        "confidence": "high",
+        "isReferral": false,
+        "resolvedVia": "email",
+        "evidence": [
+          "crm_lookup_email({\"email\":\"marcyholt88@gmail.com\"}) ⇒ client #1001"
+        ]
+      },
+      "triage": {
+        "intent": "document_request",
+        "urgency": "high",
+        "summary": "Client is asking for an update on her paperwork and is frustrated.",
+        "entities": {
+          "amounts": [],
+          "ein": null,
+          "invoiceRefs": [],
+          "dates": [
+            "last month"
+          ]
+        },
+        "reply_warranted": true,
+        "flags": {
+          "unknown_sender": false,
+          "status_churned_or_inactive": false,
+          "referenced_invoice_or_amount_not_in_crm": false,
+          "contradicts_crm": false,
+          "rescued_via_phone": false,
+          "sender_is_referral_not_client": false,
+          "needs_review": false
+        }
+      },
+      "reconciliation": {
+        "verdict": "not_applicable",
+        "details": [
+          "No amounts or invoice references in the email."
+        ],
+        "checked": []
+      },
+      "draft": {
+        "draft": "Dear Marcy,\n\nThank you for reaching out. We apologize for the delay in responding and understand your frustration. We are currently reviewing your request and will get back to you as soon as possible with an update on your paperwork.\n\nBest regards,\nThe Team",
+        "rationale": "The client's email indicates a high urgency and a document request. Since there are no specific figures to verify and the firm has no recorded amount, the draft acknowledges the request and promises a follow-up without committing to any specific details or timelines."
+      },
+      "quality": {
+        "verdict": "approved",
+        "checks": [
+          {
+            "name": "identity_resolved",
+            "pass": true,
+            "note": "Resolved to #1001 (high)."
+          },
+          {
+            "name": "confidence_high",
+            "pass": true,
+            "note": "Match confidence is high."
+          },
+          {
+            "name": "no_placeholder",
+            "pass": true,
+            "note": "Draft should contain no unfilled placeholders."
+          }
+        ]
+      },
+      "trace": [
+        {
+          "agent": "identity",
+          "message": "Sender provided an address — try an exact CRM email match first. → crm_lookup_email({\"email\":\"marcyholt88@gmail.com\"})"
+        },
+        {
+          "agent": "identity",
+          "message": "Exact sender-email match — sender is the client.",
+          "data": {
+            "clientId": "1001",
+            "confidence": "high",
+            "resolvedVia": "email"
+          }
+        },
+        {
+          "agent": "triage",
+          "message": "intent document_request / urgency high"
+        },
+        {
+          "agent": "drafting",
+          "message": "Generated grounded draft.",
+          "data": {
+            "identity": "1001",
+            "verdict": "not_applicable"
+          }
+        },
+        {
+          "agent": "quality",
+          "message": "Verdict: approved.",
+          "data": {
+            "failed": []
+          }
+        }
+      ]
+    },
+    {
+      "emailId": "email_02",
+      "sender": "Delgado, Ray",
+      "identity": {
+        "clientId": "1002",
+        "confidence": "high",
+        "isReferral": false,
+        "resolvedVia": "email",
+        "evidence": [
+          "crm_lookup_email({\"email\":\"r.delgado@delgadohvac.net\"}) ⇒ client #1002"
+        ]
+      },
+      "triage": {
+        "intent": "billing_payment",
+        "urgency": "medium",
+        "summary": "Client has a question about invoice total and payment methods.",
+        "entities": {
+          "amounts": [
+            "2,400",
+            "2,850"
+          ],
+          "ein": null,
+          "invoiceRefs": [
+            "4471"
+          ],
+          "dates": []
+        },
+        "reply_warranted": true,
+        "flags": {
+          "unknown_sender": false,
+          "status_churned_or_inactive": false,
+          "referenced_invoice_or_amount_not_in_crm": true,
+          "contradicts_crm": true,
+          "rescued_via_phone": false,
+          "sender_is_referral_not_client": false,
+          "needs_review": false
+        }
+      },
+      "reconciliation": {
+        "verdict": "discrepancy_confirmed",
+        "details": [
+          "Client references $2,850, unsupported by live sources ($2,400). Do not confirm the client's figure."
+        ],
+        "checked": [
+          {
+            "source": "quickbooks",
+            "query": "balance 1002",
+            "result": "$2,400"
+          },
+          {
+            "source": "invoice_system",
+            "query": "lookup 4471",
+            "result": "#4471 $2,400 open"
+          }
+        ]
+      },
+      "draft": {
+        "draft": "Dear Ray,\n\nThank you for reaching out regarding invoice #4471. We have received your email and are reviewing the total amount. Our records currently show a balance of $2400, and we will investigate the discrepancy you've noted. We will follow up with you shortly regarding this and your payment inquiry.\n\nBest regards, The Team",
+        "rationale": "The flag contradicts_crm is true, so the draft acknowledges the client's message and notes a discrepancy with the firm's records rather than confirming the client's figure. (Reconciliation confirmed a discrepancy — draft must not confirm the client's figure.)"
+      },
+      "quality": {
+        "verdict": "needs_human",
+        "checks": [
+          {
+            "name": "identity_resolved",
+            "pass": true,
+            "note": "Resolved to #1002 (high)."
+          },
+          {
+            "name": "confidence_high",
+            "pass": true,
+            "note": "Match confidence is high."
+          },
+          {
+            "name": "discrepancy_surfaced",
+            "pass": true,
+            "note": "Draft should surface the discrepancy, not confirm the client's figure."
+          },
+          {
+            "name": "no_placeholder",
+            "pass": true,
+            "note": "Draft should contain no unfilled placeholders."
+          }
+        ]
+      },
+      "trace": [
+        {
+          "agent": "identity",
+          "message": "Sender provided an address — try an exact CRM email match first. → crm_lookup_email({\"email\":\"r.delgado@delgadohvac.net\"})"
+        },
+        {
+          "agent": "identity",
+          "message": "Exact sender-email match — sender is the client.",
+          "data": {
+            "clientId": "1002",
+            "confidence": "high",
+            "resolvedVia": "email"
+          }
+        },
+        {
+          "agent": "triage",
+          "message": "intent billing_payment / urgency medium"
+        },
+        {
+          "agent": "reconciliation",
+          "message": "Queried live sources.",
+          "data": {
+            "checked": [
+              {
+                "source": "quickbooks",
+                "query": "balance 1002",
+                "result": "$2,400"
+              },
+              {
+                "source": "invoice_system",
+                "query": "lookup 4471",
+                "result": "#4471 $2,400 open"
+              }
+            ]
+          }
+        },
+        {
+          "agent": "drafting",
+          "message": "Generated grounded draft.",
+          "data": {
+            "identity": "1002",
+            "verdict": "discrepancy_confirmed"
+          }
+        },
+        {
+          "agent": "quality",
+          "message": "Verdict: needs_human.",
+          "data": {
+            "failed": []
+          }
+        }
+      ]
+    },
+    {
+      "emailId": "email_03",
+      "sender": "tina@brightpathbooks.com",
+      "identity": {
+        "clientId": "1003",
+        "confidence": "high",
+        "isReferral": false,
+        "resolvedVia": "email",
+        "evidence": [
+          "crm_lookup_email({\"email\":\"tina@brightpathbooks.com\"}) ⇒ client #1003"
+        ]
+      },
+      "triage": {
+        "intent": "document_request",
+        "urgency": "high",
+        "summary": "Client needs Q2 numbers for a call today.",
+        "entities": {
+          "amounts": [],
+          "ein": null,
+          "invoiceRefs": [],
+          "dates": [
+            "today",
+            "Q2"
+          ]
+        },
+        "reply_warranted": true,
+        "flags": {
+          "unknown_sender": false,
+          "status_churned_or_inactive": false,
+          "referenced_invoice_or_amount_not_in_crm": false,
+          "contradicts_crm": false,
+          "rescued_via_phone": false,
+          "sender_is_referral_not_client": false,
+          "needs_review": false
+        }
+      },
+      "reconciliation": {
+        "verdict": "not_applicable",
+        "details": [
+          "No amounts or invoice references in the email."
+        ],
+        "checked": []
+      },
+      "draft": {
+        "draft": "Dear Tina,\n\nThank you for reaching out. We understand you need Q2 financial information urgently for a call today.\n\nWhile we are looking into this for you, we do not have a confirmed figure on file at this moment. We will review our records and aim to get this information to you as quickly as possible. Please note that any figures provided will be based on our verified records.\n\nBest regards,\nThe Team",
+        "rationale": "The client's request for specific financial figures was not met because the firm has no recorded amount for this client, necessitating a conservative and non-committal response while emphasizing reliance on verified records."
+      },
+      "quality": {
+        "verdict": "approved",
+        "checks": [
+          {
+            "name": "identity_resolved",
+            "pass": true,
+            "note": "Resolved to #1003 (high)."
+          },
+          {
+            "name": "confidence_high",
+            "pass": true,
+            "note": "Match confidence is high."
+          },
+          {
+            "name": "no_placeholder",
+            "pass": true,
+            "note": "Draft should contain no unfilled placeholders."
+          }
+        ]
+      },
+      "trace": [
+        {
+          "agent": "identity",
+          "message": "Sender provided an address — try an exact CRM email match first. → crm_lookup_email({\"email\":\"tina@brightpathbooks.com\"})"
+        },
+        {
+          "agent": "identity",
+          "message": "Exact sender-email match — sender is the client.",
+          "data": {
+            "clientId": "1003",
+            "confidence": "high",
+            "resolvedVia": "email"
+          }
+        },
+        {
+          "agent": "triage",
+          "message": "intent document_request / urgency high"
+        },
+        {
+          "agent": "drafting",
+          "message": "Generated grounded draft.",
+          "data": {
+            "identity": "1003",
+            "verdict": "not_applicable"
+          }
+        },
+        {
+          "agent": "quality",
+          "message": "Verdict: approved.",
+          "data": {
+            "failed": []
+          }
+        }
+      ]
+    },
+    {
+      "emailId": "email_04",
+      "sender": "jpark",
+      "identity": {
+        "clientId": "1004",
+        "confidence": "high",
+        "isReferral": false,
+        "resolvedVia": "email",
+        "evidence": [
+          "crm_lookup_email({\"email\":\"jpark.realty@outlook.com\"}) ⇒ client #1004"
+        ]
+      },
+      "triage": {
+        "intent": "onboarding_lead",
+        "urgency": "medium",
+        "summary": "Client wants to push the start date to July.",
+        "entities": {
+          "amounts": [],
+          "ein": null,
+          "invoiceRefs": [],
+          "dates": [
+            "july",
+            "june"
+          ]
+        },
+        "reply_warranted": true,
+        "flags": {
+          "unknown_sender": false,
+          "status_churned_or_inactive": false,
+          "referenced_invoice_or_amount_not_in_crm": false,
+          "contradicts_crm": false,
+          "rescued_via_phone": false,
+          "sender_is_referral_not_client": false,
+          "needs_review": false
+        }
+      },
+      "reconciliation": {
+        "verdict": "not_applicable",
+        "details": [
+          "No amounts or invoice references in the email."
+        ],
+        "checked": []
+      },
+      "draft": {
+        "draft": "Dear J. Park,\n\nThank you for your email and for reviewing the proposal. We understand you'd like to adjust the start date to July due to a personal commitment.\n\nWe have noted your request and will confirm the revised start date shortly. Our records currently show a service amount of $6,500, and we will reconcile this with your proposal details as we move forward.\n\nBest regards,\nThe Team",
+        "rationale": "The draft acknowledges the client's request to change the start date and notes the firm's recorded amount, avoiding confirmation of any figure from the client's email. It prioritizes the client's request to adjust the start date while adhering to the rule of not confirming unverified financial figures."
+      },
+      "quality": {
+        "verdict": "approved",
+        "checks": [
+          {
+            "name": "identity_resolved",
+            "pass": true,
+            "note": "Resolved to #1004 (high)."
+          },
+          {
+            "name": "confidence_high",
+            "pass": true,
+            "note": "Match confidence is high."
+          },
+          {
+            "name": "no_placeholder",
+            "pass": true,
+            "note": "Draft should contain no unfilled placeholders."
+          }
+        ]
+      },
+      "trace": [
+        {
+          "agent": "identity",
+          "message": "Sender provided an address — try an exact CRM email match first. → crm_lookup_email({\"email\":\"jpark.realty@outlook.com\"})"
+        },
+        {
+          "agent": "identity",
+          "message": "Exact sender-email match — sender is the client.",
+          "data": {
+            "clientId": "1004",
+            "confidence": "high",
+            "resolvedVia": "email"
+          }
+        },
+        {
+          "agent": "triage",
+          "message": "intent onboarding_lead / urgency medium"
+        },
+        {
+          "agent": "drafting",
+          "message": "Generated grounded draft.",
+          "data": {
+            "identity": "1004",
+            "verdict": "not_applicable"
+          }
+        },
+        {
+          "agent": "quality",
+          "message": "Verdict: approved.",
+          "data": {
+            "failed": []
+          }
+        }
+      ]
+    },
+    {
+      "emailId": "email_05",
+      "sender": "Sandra Liu",
+      "identity": {
+        "clientId": "1005",
+        "confidence": "medium",
+        "isReferral": true,
+        "resolvedVia": "phone",
+        "evidence": [
+          "crm_lookup_email({\"email\":\"sliu@meridianadvisors.co\"}) ⇒ null",
+          "extract_body_contacts({\"body\":\"Hi, referring a new client over. Name is Tom Becker, runs a small roofing outfit out of\\nEagan. tom.becker at beckerroofing dot com, phone is somewhere around 612 555 0193 i think.\\nHe wants help with the bookkeeping cleanup we talked about. Can you reach out this week?\\nThanks!!\\nSandra\",\"subject\":\"New client referral - pls add\"}) ⇒ {\"phones\":[\"6125550193\"],\"emails\":[\"tom.becker@beckerroofing.com\"],\"isReferral\":true}",
+          "crm_lookup_phone({\"phone\":\"6125550193\"}) ⇒ client #1005"
+        ]
+      },
+      "triage": {
+        "intent": "onboarding_lead",
+        "urgency": "medium",
+        "summary": "Referral of new client Tom Becker for bookkeeping cleanup.",
+        "entities": {
+          "amounts": [],
+          "ein": null,
+          "invoiceRefs": [],
+          "dates": []
+        },
+        "reply_warranted": true,
+        "flags": {
+          "unknown_sender": true,
+          "status_churned_or_inactive": false,
+          "referenced_invoice_or_amount_not_in_crm": false,
+          "contradicts_crm": false,
+          "rescued_via_phone": true,
+          "sender_is_referral_not_client": true,
+          "needs_review": true
+        }
+      },
+      "reconciliation": {
+        "verdict": "not_applicable",
+        "details": [
+          "No amounts or invoice references in the email."
+        ],
+        "checked": []
+      },
+      "draft": {
+        "draft": "Dear Sandra,\n\nThank you for referring Tom Becker to us. We have received his contact information and will reach out to him this week to discuss his bookkeeping needs.\n\nBest regards,\nThe Team\n\nINTERNAL NOTE: We will reach out to Tom Becker to discuss bookkeeping cleanup.",
+        "rationale": "The sender is a referral, so the draft thanks the referrer and confirms outreach to the client. It avoids confirming any client-specific details as per the hard rules."
+      },
+      "quality": {
+        "verdict": "needs_human",
+        "checks": [
+          {
+            "name": "identity_resolved",
+            "pass": true,
+            "note": "Resolved to #1005 (medium)."
+          },
+          {
+            "name": "confidence_high",
+            "pass": false,
+            "note": "Match confidence is medium."
+          },
+          {
+            "name": "referral_routed",
+            "pass": true,
+            "note": "Referral replies should address the referrer, not the unverified client."
+          },
+          {
+            "name": "no_placeholder",
+            "pass": true,
+            "note": "Draft should contain no unfilled placeholders."
+          }
+        ]
+      },
+      "trace": [
+        {
+          "agent": "identity",
+          "message": "Sender provided an address — try an exact CRM email match first. → crm_lookup_email({\"email\":\"sliu@meridianadvisors.co\"})"
+        },
+        {
+          "agent": "identity",
+          "message": "Sender is not a known client — extract body contacts and check for a referral. → extract_body_contacts({\"body\":\"Hi, referring a new client over. Name is Tom Becker, runs a small roofing outfit out of\\nEagan. tom.becker at beckerroofing dot com, phone is somewhere around 612 555 0193 i think.\\nHe wants help with the bookkeeping cleanup we talked about. Can you reach out this week?\\nThanks!!\\nSandra\",\"subject\":\"New client referral - pls add\"})"
+        },
+        {
+          "agent": "identity",
+          "message": "Body contains a phone number — try a CRM phone match (rescues blank-email rows). → crm_lookup_phone({\"phone\":\"6125550193\"})"
+        },
+        {
+          "agent": "identity",
+          "message": "Phone matched a CRM row the sender email could not — likely a referral.",
+          "data": {
+            "clientId": "1005",
+            "confidence": "medium",
+            "resolvedVia": "phone"
+          }
+        },
+        {
+          "agent": "triage",
+          "message": "intent onboarding_lead / urgency medium"
+        },
+        {
+          "agent": "drafting",
+          "message": "Generated grounded draft.",
+          "data": {
+            "identity": "1005",
+            "verdict": "not_applicable"
+          }
+        },
+        {
+          "agent": "quality",
+          "message": "Verdict: needs_human.",
+          "data": {
+            "failed": [
+              "confidence_high"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "emailId": "email_06",
+      "sender": "angryclient@protonmail.com",
+      "identity": {
+        "clientId": "1006",
+        "confidence": "high",
+        "isReferral": false,
+        "resolvedVia": "email",
+        "evidence": [
+          "crm_lookup_email({\"email\":\"angryclient@protonmail.com\"}) ⇒ client #1006"
+        ]
+      },
+      "triage": {
+        "intent": "billing_payment",
+        "urgency": "high",
+        "summary": "Client was charged twice and wants a refund.",
+        "entities": {
+          "amounts": [
+            "twice"
+          ],
+          "ein": null,
+          "invoiceRefs": [],
+          "dates": [
+            "friday"
+          ]
+        },
+        "reply_warranted": true,
+        "flags": {
+          "unknown_sender": false,
+          "status_churned_or_inactive": true,
+          "referenced_invoice_or_amount_not_in_crm": false,
+          "contradicts_crm": false,
+          "rescued_via_phone": false,
+          "sender_is_referral_not_client": false,
+          "needs_review": false
+        }
+      },
+      "reconciliation": {
+        "verdict": "not_applicable",
+        "details": [
+          "No amounts or invoice references in the email."
+        ],
+        "checked": []
+      },
+      "draft": {
+        "draft": "Dear angryclient@protonmail.com,\n\nThank you for reaching out to us regarding a potential double charge. We understand your concern and are looking into this matter. As our records for your account are not immediately available for review, we will need a little time to investigate thoroughly. A member of our team will be in touch shortly to discuss this further.\n\nBest regards,\nThe Team",
+        "rationale": "The client's status is 'churned or inactive', so the response adopts a re-engagement tone while acknowledging the billing issue and deferring specifics until a review is complete."
+      },
+      "quality": {
+        "verdict": "approved",
+        "checks": [
+          {
+            "name": "identity_resolved",
+            "pass": true,
+            "note": "Resolved to #1006 (high)."
+          },
+          {
+            "name": "confidence_high",
+            "pass": true,
+            "note": "Match confidence is high."
+          },
+          {
+            "name": "no_placeholder",
+            "pass": true,
+            "note": "Draft should contain no unfilled placeholders."
+          }
+        ]
+      },
+      "trace": [
+        {
+          "agent": "identity",
+          "message": "Sender provided an address — try an exact CRM email match first. → crm_lookup_email({\"email\":\"angryclient@protonmail.com\"})"
+        },
+        {
+          "agent": "identity",
+          "message": "Exact sender-email match — sender is the client.",
+          "data": {
+            "clientId": "1006",
+            "confidence": "high",
+            "resolvedVia": "email"
+          }
+        },
+        {
+          "agent": "triage",
+          "message": "intent billing_payment / urgency high"
+        },
+        {
+          "agent": "drafting",
+          "message": "Generated grounded draft.",
+          "data": {
+            "identity": "1006",
+            "verdict": "not_applicable"
+          }
+        },
+        {
+          "agent": "quality",
+          "message": "Verdict: approved.",
+          "data": {
+            "failed": []
+          }
+        }
+      ]
+    },
+    {
+      "emailId": "email_07",
+      "sender": "Bev",
+      "identity": {
+        "clientId": "1007",
+        "confidence": "high",
+        "isReferral": false,
+        "resolvedVia": "email",
+        "evidence": [
+          "crm_lookup_email({\"email\":\"bev.nguyen@gmail.com\"}) ⇒ client #1007"
+        ]
+      },
+      "triage": {
+        "intent": "document_request",
+        "urgency": "low",
+        "summary": "Client is checking if policy documents were sent.",
+        "entities": {
+          "amounts": [],
+          "ein": null,
+          "invoiceRefs": [],
+          "dates": []
+        },
+        "reply_warranted": true,
+        "flags": {
+          "unknown_sender": false,
+          "status_churned_or_inactive": false,
+          "referenced_invoice_or_amount_not_in_crm": false,
+          "contradicts_crm": false,
+          "rescued_via_phone": false,
+          "sender_is_referral_not_client": false,
+          "needs_review": false
+        }
+      },
+      "reconciliation": {
+        "verdict": "not_applicable",
+        "details": [
+          "No amounts or invoice references in the email."
+        ],
+        "checked": []
+      },
+      "draft": {
+        "draft": "Dear Bev,\n\nThank you for reaching out. We've checked our records and haven't yet received the policy documents. We'll look into this further and will reach out if we locate them or require anything further.\n\nBest regards,\nThe Team",
+        "rationale": "The firm's records indicate that policy documents have not been received, so the draft politely acknowledges the client's query and states that the documents are still pending without confirming any figures or actions. The low urgency and lack of specific figures also support a conservative, non-committal response."
+      },
+      "quality": {
+        "verdict": "approved",
+        "checks": [
+          {
+            "name": "identity_resolved",
+            "pass": true,
+            "note": "Resolved to #1007 (high)."
+          },
+          {
+            "name": "confidence_high",
+            "pass": true,
+            "note": "Match confidence is high."
+          },
+          {
+            "name": "no_placeholder",
+            "pass": true,
+            "note": "Draft should contain no unfilled placeholders."
+          }
+        ]
+      },
+      "trace": [
+        {
+          "agent": "identity",
+          "message": "Sender provided an address — try an exact CRM email match first. → crm_lookup_email({\"email\":\"bev.nguyen@gmail.com\"})"
+        },
+        {
+          "agent": "identity",
+          "message": "Exact sender-email match — sender is the client.",
+          "data": {
+            "clientId": "1007",
+            "confidence": "high",
+            "resolvedVia": "email"
+          }
+        },
+        {
+          "agent": "triage",
+          "message": "intent document_request / urgency low"
+        },
+        {
+          "agent": "drafting",
+          "message": "Generated grounded draft.",
+          "data": {
+            "identity": "1007",
+            "verdict": "not_applicable"
+          }
+        },
+        {
+          "agent": "quality",
+          "message": "Verdict: approved.",
+          "data": {
+            "failed": []
+          }
+        }
+      ]
+    },
+    {
+      "emailId": "email_08",
+      "sender": "carlos m",
+      "identity": {
+        "clientId": "1008",
+        "confidence": "high",
+        "isReferral": false,
+        "resolvedVia": "email",
+        "evidence": [
+          "crm_lookup_email({\"email\":\"c.morales.contracting@gmail.com\"}) ⇒ client #1008"
+        ]
+      },
+      "triage": {
+        "intent": "document_request",
+        "urgency": "medium",
+        "summary": "Client is requesting documents needed for a loan.",
+        "entities": {
+          "amounts": [],
+          "ein": null,
+          "invoiceRefs": [],
+          "dates": [
+            "2023",
+            "2024"
+          ]
+        },
+        "reply_warranted": true,
+        "flags": {
+          "unknown_sender": false,
+          "status_churned_or_inactive": false,
+          "referenced_invoice_or_amount_not_in_crm": false,
+          "contradicts_crm": false,
+          "rescued_via_phone": false,
+          "sender_is_referral_not_client": false,
+          "needs_review": false
+        }
+      },
+      "reconciliation": {
+        "verdict": "not_applicable",
+        "details": [
+          "No amounts or invoice references in the email."
+        ],
+        "checked": []
+      },
+      "draft": {
+        "draft": "Dear Carlos Morales,\n\nThank you for sending over the requested documents. We understand that the loan officer requires a P&L, balance sheet, and your last two years of returns by the end of the week. We are reviewing the information you've provided and will reach out if we have any questions or require further details. \n\nBest regards, The Team",
+        "rationale": "The 'contradicts_crm' and 'referenced_invoice_or_amount_not_in_crm' flags were false, but the client's email did not contain a specific figure that needed to be addressed. The draft focuses on acknowledging the document request and confirming the firm's understanding of the requirements without repeating any unverified client figures."
+      },
+      "quality": {
+        "verdict": "approved",
+        "checks": [
+          {
+            "name": "identity_resolved",
+            "pass": true,
+            "note": "Resolved to #1008 (high)."
+          },
+          {
+            "name": "confidence_high",
+            "pass": true,
+            "note": "Match confidence is high."
+          },
+          {
+            "name": "no_placeholder",
+            "pass": true,
+            "note": "Draft should contain no unfilled placeholders."
+          }
+        ]
+      },
+      "trace": [
+        {
+          "agent": "identity",
+          "message": "Sender provided an address — try an exact CRM email match first. → crm_lookup_email({\"email\":\"c.morales.contracting@gmail.com\"})"
+        },
+        {
+          "agent": "identity",
+          "message": "Exact sender-email match — sender is the client.",
+          "data": {
+            "clientId": "1008",
+            "confidence": "high",
+            "resolvedVia": "email"
+          }
+        },
+        {
+          "agent": "triage",
+          "message": "intent document_request / urgency medium"
+        },
+        {
+          "agent": "drafting",
+          "message": "Generated grounded draft.",
+          "data": {
+            "identity": "1008",
+            "verdict": "not_applicable"
+          }
+        },
+        {
+          "agent": "quality",
+          "message": "Verdict: approved.",
+          "data": {
+            "failed": []
+          }
+        }
+      ]
+    },
+    {
+      "emailId": "email_09",
+      "sender": "dwight.s@stellaroofing.com",
+      "identity": {
+        "clientId": "1009",
+        "confidence": "high",
+        "isReferral": false,
+        "resolvedVia": "email",
+        "evidence": [
+          "crm_lookup_email({\"email\":\"dwight.s@stellaroofing.com\"}) ⇒ client #1009"
+        ]
+      },
+      "triage": {
+        "intent": "scheduling",
+        "urgency": "medium",
+        "summary": "Client wants to reschedule a meeting.",
+        "entities": {
+          "amounts": [],
+          "ein": null,
+          "invoiceRefs": [],
+          "dates": [
+            "thursday",
+            "early next week",
+            "mon",
+            "tues morning"
+          ]
+        },
+        "reply_warranted": true,
+        "flags": {
+          "unknown_sender": false,
+          "status_churned_or_inactive": false,
+          "referenced_invoice_or_amount_not_in_crm": false,
+          "contradicts_crm": false,
+          "rescued_via_phone": false,
+          "sender_is_referral_not_client": false,
+          "needs_review": false
+        }
+      },
+      "reconciliation": {
+        "verdict": "not_applicable",
+        "details": [
+          "No amounts or invoice references in the email."
+        ],
+        "checked": []
+      },
+      "draft": {
+        "draft": "Dear Dwight,\n\nThank you for letting us know about the need to reschedule your meeting. We understand that jobsite demands can arise unexpectedly.\n\nWe will reach out to coordinate a new time for early next week, likely Monday or Tuesday morning, and will avoid Wednesday.\n\nBest regards,\nThe Team",
+        "rationale": "The draft is grounded in the matched client 'Dwight S / Stella Roofing' and the detected intent 'scheduling'. The firm's recorded amount is absent, so the draft avoids confirming any financial figure. The draft offers to reschedule for early next week as requested, and proposes Monday or Tuesday mornings while noting the unavailability of Wednesday."
+      },
+      "quality": {
+        "verdict": "approved",
+        "checks": [
+          {
+            "name": "identity_resolved",
+            "pass": true,
+            "note": "Resolved to #1009 (high)."
+          },
+          {
+            "name": "confidence_high",
+            "pass": true,
+            "note": "Match confidence is high."
+          },
+          {
+            "name": "no_placeholder",
+            "pass": true,
+            "note": "Draft should contain no unfilled placeholders."
+          }
+        ]
+      },
+      "trace": [
+        {
+          "agent": "identity",
+          "message": "Sender provided an address — try an exact CRM email match first. → crm_lookup_email({\"email\":\"dwight.s@stellaroofing.com\"})"
+        },
+        {
+          "agent": "identity",
+          "message": "Exact sender-email match — sender is the client.",
+          "data": {
+            "clientId": "1009",
+            "confidence": "high",
+            "resolvedVia": "email"
+          }
+        },
+        {
+          "agent": "triage",
+          "message": "intent scheduling / urgency medium"
+        },
+        {
+          "agent": "drafting",
+          "message": "Generated grounded draft.",
+          "data": {
+            "identity": "1009",
+            "verdict": "not_applicable"
+          }
+        },
+        {
+          "agent": "quality",
+          "message": "Verdict: approved.",
+          "data": {
+            "failed": []
+          }
+        }
+      ]
+    },
+    {
+      "emailId": "email_10",
+      "sender": "priya.k",
+      "identity": {
+        "clientId": "1010",
+        "confidence": "high",
+        "isReferral": false,
+        "resolvedVia": "email",
+        "evidence": [
+          "crm_lookup_email({\"email\":\"priya.kapoor@kapooraccounting.com\"}) ⇒ client #1010"
+        ]
+      },
+      "triage": {
+        "intent": "onboarding_lead",
+        "urgency": "medium",
+        "summary": "Client is having trouble submitting onboarding form due to invalid EIN.",
+        "entities": {
+          "amounts": [],
+          "ein": "47-1839204",
+          "invoiceRefs": [],
+          "dates": []
+        },
+        "reply_warranted": true,
+        "flags": {
+          "unknown_sender": false,
+          "status_churned_or_inactive": false,
+          "referenced_invoice_or_amount_not_in_crm": false,
+          "contradicts_crm": false,
+          "rescued_via_phone": false,
+          "sender_is_referral_not_client": false,
+          "needs_review": false
+        }
+      },
+      "reconciliation": {
+        "verdict": "not_applicable",
+        "details": [
+          "No amounts or invoice references in the email."
+        ],
+        "checked": []
+      },
+      "draft": {
+        "draft": "Dear Priya,\n\nThank you for reaching out and for submitting the form. We apologize for the trouble with the EIN field submission; we've made a note of this error.\n\nWe have your information and will review it shortly. A member of our team will be in touch with next steps.\n\nBest regards,\nThe Team",
+        "rationale": "The client reported a form submission error. The draft acknowledges the error and the client's message, states the firm is reviewing it, and promises a follow-up, aligning with the 'form submit error' firm note and the 'onboarding_lead' intent without confirming any unverified details."
+      },
+      "quality": {
+        "verdict": "approved",
+        "checks": [
+          {
+            "name": "identity_resolved",
+            "pass": true,
+            "note": "Resolved to #1010 (high)."
+          },
+          {
+            "name": "confidence_high",
+            "pass": true,
+            "note": "Match confidence is high."
+          },
+          {
+            "name": "no_placeholder",
+            "pass": true,
+            "note": "Draft should contain no unfilled placeholders."
+          }
+        ]
+      },
+      "trace": [
+        {
+          "agent": "identity",
+          "message": "Sender provided an address — try an exact CRM email match first. → crm_lookup_email({\"email\":\"priya.kapoor@kapooraccounting.com\"})"
+        },
+        {
+          "agent": "identity",
+          "message": "Exact sender-email match — sender is the client.",
+          "data": {
+            "clientId": "1010",
+            "confidence": "high",
+            "resolvedVia": "email"
+          }
+        },
+        {
+          "agent": "triage",
+          "message": "intent onboarding_lead / urgency medium"
+        },
+        {
+          "agent": "drafting",
+          "message": "Generated grounded draft.",
+          "data": {
+            "identity": "1010",
+            "verdict": "not_applicable"
+          }
+        },
+        {
+          "agent": "quality",
+          "message": "Verdict: approved.",
+          "data": {
+            "failed": []
+          }
+        }
+      ]
+    },
+    {
+      "emailId": "email_11",
+      "sender": "mike",
+      "identity": {
+        "clientId": "1011",
+        "confidence": "high",
+        "isReferral": false,
+        "resolvedVia": "email",
+        "evidence": [
+          "crm_lookup_email({\"email\":\"mike@twincitiesflooring.com\"}) ⇒ client #1011"
+        ]
+      },
+      "triage": {
+        "intent": "billing_payment",
+        "urgency": "medium",
+        "summary": "Client sent payment and is asking about next reports.",
+        "entities": {
+          "amounts": [],
+          "ein": null,
+          "invoiceRefs": [],
+          "dates": [
+            "march",
+            "end of month"
+          ]
+        },
+        "reply_warranted": true,
+        "flags": {
+          "unknown_sender": false,
+          "status_churned_or_inactive": false,
+          "referenced_invoice_or_amount_not_in_crm": false,
+          "contradicts_crm": false,
+          "rescued_via_phone": false,
+          "sender_is_referral_not_client": false,
+          "needs_review": false
+        }
+      },
+      "reconciliation": {
+        "verdict": "not_applicable",
+        "details": [
+          "No amounts or invoice references in the email."
+        ],
+        "checked": []
+      },
+      "draft": {
+        "draft": "Hi Mike,\n\nThank you for your email. We've received your payment confirmation via Zelle for the March work and will process it accordingly. Our records currently show a balance of $1800 for this.\n\nRegarding the reports, they are typically sent at the end of the month. We will ensure you receive them promptly.\n\nBest regards,\nThe Team",
+        "rationale": "The sender is the client and there are no flags that contradict the firm's records or require a conservative approach, so the draft confirms receipt of payment and provides information about the reports while stating the firm's recorded amount."
+      },
+      "quality": {
+        "verdict": "approved",
+        "checks": [
+          {
+            "name": "identity_resolved",
+            "pass": true,
+            "note": "Resolved to #1011 (high)."
+          },
+          {
+            "name": "confidence_high",
+            "pass": true,
+            "note": "Match confidence is high."
+          },
+          {
+            "name": "no_placeholder",
+            "pass": true,
+            "note": "Draft should contain no unfilled placeholders."
+          }
+        ]
+      },
+      "trace": [
+        {
+          "agent": "identity",
+          "message": "Sender provided an address — try an exact CRM email match first. → crm_lookup_email({\"email\":\"mike@twincitiesflooring.com\"})"
+        },
+        {
+          "agent": "identity",
+          "message": "Exact sender-email match — sender is the client.",
+          "data": {
+            "clientId": "1011",
+            "confidence": "high",
+            "resolvedVia": "email"
+          }
+        },
+        {
+          "agent": "triage",
+          "message": "intent billing_payment / urgency medium"
+        },
+        {
+          "agent": "drafting",
+          "message": "Generated grounded draft.",
+          "data": {
+            "identity": "1011",
+            "verdict": "not_applicable"
+          }
+        },
+        {
+          "agent": "quality",
+          "message": "Verdict: approved.",
+          "data": {
+            "failed": []
+          }
+        }
+      ]
+    },
+    {
+      "emailId": "email_12",
+      "sender": "Whitaker, Joan",
+      "identity": {
+        "clientId": "1012",
+        "confidence": "high",
+        "isReferral": false,
+        "resolvedVia": "email",
+        "evidence": [
+          "crm_lookup_email({\"email\":\"jwhitaker@whitakeragency.com\"}) ⇒ client #1012"
+        ]
+      },
+      "triage": {
+        "intent": "document_request",
+        "urgency": "medium",
+        "summary": "Requesting 5 years of loss runs for Hendricks account.",
+        "entities": {
+          "amounts": [],
+          "ein": null,
+          "invoiceRefs": [],
+          "dates": [
+            "5 years"
+          ]
+        },
+        "reply_warranted": true,
+        "flags": {
+          "unknown_sender": false,
+          "status_churned_or_inactive": false,
+          "referenced_invoice_or_amount_not_in_crm": false,
+          "contradicts_crm": false,
+          "rescued_via_phone": false,
+          "sender_is_referral_not_client": false,
+          "needs_review": false
+        }
+      },
+      "reconciliation": {
+        "verdict": "not_applicable",
+        "details": [
+          "No amounts or invoice references in the email."
+        ],
+        "checked": []
+      },
+      "draft": {
+        "draft": "Dear Ms. Whitaker,\n\nThank you for reaching out. We understand you are requesting a loss run for the Hendricks account going back five years.\n\nOur team is looking into this and will follow up with you shortly regarding the availability of this document.\n\nBest regards,\nThe Team",
+        "rationale": "The client's stated amount was not confirmed as no amount was on file. The draft acknowledges the request and states a team member will follow up."
+      },
+      "quality": {
+        "verdict": "approved",
+        "checks": [
+          {
+            "name": "identity_resolved",
+            "pass": true,
+            "note": "Resolved to #1012 (high)."
+          },
+          {
+            "name": "confidence_high",
+            "pass": true,
+            "note": "Match confidence is high."
+          },
+          {
+            "name": "no_placeholder",
+            "pass": true,
+            "note": "Draft should contain no unfilled placeholders."
+          }
+        ]
+      },
+      "trace": [
+        {
+          "agent": "identity",
+          "message": "Sender provided an address — try an exact CRM email match first. → crm_lookup_email({\"email\":\"jwhitaker@whitakeragency.com\"})"
+        },
+        {
+          "agent": "identity",
+          "message": "Exact sender-email match — sender is the client.",
+          "data": {
+            "clientId": "1012",
+            "confidence": "high",
+            "resolvedVia": "email"
+          }
+        },
+        {
+          "agent": "triage",
+          "message": "intent document_request / urgency medium"
+        },
+        {
+          "agent": "drafting",
+          "message": "Generated grounded draft.",
+          "data": {
+            "identity": "1012",
+            "verdict": "not_applicable"
+          }
+        },
+        {
+          "agent": "quality",
+          "message": "Verdict: approved.",
+          "data": {
+            "failed": []
+          }
+        }
+      ]
+    },
+    {
+      "emailId": "email_13",
+      "sender": "newlead2024@yahoo.com",
+      "identity": {
+        "clientId": "1013",
+        "confidence": "high",
+        "isReferral": false,
+        "resolvedVia": "email",
+        "evidence": [
+          "crm_lookup_email({\"email\":\"newlead2024@yahoo.com\"}) ⇒ client #1013"
+        ]
+      },
+      "triage": {
+        "intent": "onboarding_lead",
+        "urgency": "medium",
+        "summary": "Inquiry about bookkeeping services for a dental practice.",
+        "entities": {
+          "amounts": [],
+          "ein": null,
+          "invoiceRefs": [],
+          "dates": []
+        },
+        "reply_warranted": true,
+        "flags": {
+          "unknown_sender": false,
+          "status_churned_or_inactive": false,
+          "referenced_invoice_or_amount_not_in_crm": false,
+          "contradicts_crm": false,
+          "rescued_via_phone": false,
+          "sender_is_referral_not_client": false,
+          "needs_review": false
+        }
+      },
+      "reconciliation": {
+        "verdict": "not_applicable",
+        "details": [
+          "No amounts or invoice references in the email."
+        ],
+        "checked": []
+      },
+      "draft": {
+        "draft": "Dear newlead2024@yahoo.com,\n\nThank you for reaching out and for your interest in our services. We do have experience working with dental practices and understand that managing bookkeeping for multi-location businesses can be complex, especially when there's a backlog.\n\nTo provide you with an accurate estimate, we'll need a bit more information about your specific needs and the scope of work involved. A member of our team will reach out to you shortly to discuss this further and answer any questions you may have.\n\nBest regards,\nThe Team",
+        "rationale": "The draft is a conservative response due to the lead's status and lack of firm records, acknowledging their situation and indicating a follow-up without committing to costs or specific services."
+      },
+      "quality": {
+        "verdict": "approved",
+        "checks": [
+          {
+            "name": "identity_resolved",
+            "pass": true,
+            "note": "Resolved to #1013 (high)."
+          },
+          {
+            "name": "confidence_high",
+            "pass": true,
+            "note": "Match confidence is high."
+          },
+          {
+            "name": "no_placeholder",
+            "pass": true,
+            "note": "Draft should contain no unfilled placeholders."
+          }
+        ]
+      },
+      "trace": [
+        {
+          "agent": "identity",
+          "message": "Sender provided an address — try an exact CRM email match first. → crm_lookup_email({\"email\":\"newlead2024@yahoo.com\"})"
+        },
+        {
+          "agent": "identity",
+          "message": "Exact sender-email match — sender is the client.",
+          "data": {
+            "clientId": "1013",
+            "confidence": "high",
+            "resolvedVia": "email"
+          }
+        },
+        {
+          "agent": "triage",
+          "message": "intent onboarding_lead / urgency medium"
+        },
+        {
+          "agent": "drafting",
+          "message": "Generated grounded draft.",
+          "data": {
+            "identity": "1013",
+            "verdict": "not_applicable"
+          }
+        },
+        {
+          "agent": "quality",
+          "message": "Verdict: approved.",
+          "data": {
+            "failed": []
+          }
+        }
+      ]
+    },
+    {
+      "emailId": "email_14",
+      "sender": "greg",
+      "identity": {
+        "clientId": "1014",
+        "confidence": "high",
+        "isReferral": false,
+        "resolvedVia": "email",
+        "evidence": [
+          "crm_lookup_email({\"email\":\"greg@gregsautobody.biz\"}) ⇒ client #1014"
+        ]
+      },
+      "triage": {
+        "intent": "onboarding_lead",
+        "urgency": "medium",
+        "summary": "Client needs new accountant to handle tax filing before extension deadline.",
+        "entities": {
+          "amounts": [],
+          "ein": null,
+          "invoiceRefs": [],
+          "dates": [
+            "oct"
+          ]
+        },
+        "reply_warranted": true,
+        "flags": {
+          "unknown_sender": false,
+          "status_churned_or_inactive": false,
+          "referenced_invoice_or_amount_not_in_crm": false,
+          "contradicts_crm": false,
+          "rescued_via_phone": false,
+          "sender_is_referral_not_client": false,
+          "needs_review": false
+        }
+      },
+      "reconciliation": {
+        "verdict": "not_applicable",
+        "details": [
+          "No amounts or invoice references in the email."
+        ],
+        "checked": []
+      },
+      "draft": {
+        "draft": "Dear Greg,\n\nThank you for reaching out. We understand you're looking for assistance with your bookkeeping and tax preparations before the October deadline, especially given your previous accountant's retirement. We do handle such transitions and can help organize your QuickBooks data.\n\nTo get started, we'd like to schedule a brief call to discuss your needs and how we can best support you. Please let us know what time works best for you.\n\nBest regards,\nThe Team",
+        "rationale": "The draft addresses the client's stated need for onboarding and acknowledges the urgency due to the upcoming deadline and prior accountant's retirement. It aims for a warm, professional, and non-committal tone by focusing on scheduling a call rather than confirming figures or making specific commitments, given the client's informal data state."
+      },
+      "quality": {
+        "verdict": "approved",
+        "checks": [
+          {
+            "name": "identity_resolved",
+            "pass": true,
+            "note": "Resolved to #1014 (high)."
+          },
+          {
+            "name": "confidence_high",
+            "pass": true,
+            "note": "Match confidence is high."
+          },
+          {
+            "name": "no_placeholder",
+            "pass": true,
+            "note": "Draft should contain no unfilled placeholders."
+          }
+        ]
+      },
+      "trace": [
+        {
+          "agent": "identity",
+          "message": "Sender provided an address — try an exact CRM email match first. → crm_lookup_email({\"email\":\"greg@gregsautobody.biz\"})"
+        },
+        {
+          "agent": "identity",
+          "message": "Exact sender-email match — sender is the client.",
+          "data": {
+            "clientId": "1014",
+            "confidence": "high",
+            "resolvedVia": "email"
+          }
+        },
+        {
+          "agent": "triage",
+          "message": "intent onboarding_lead / urgency medium"
+        },
+        {
+          "agent": "drafting",
+          "message": "Generated grounded draft.",
+          "data": {
+            "identity": "1014",
+            "verdict": "not_applicable"
+          }
+        },
+        {
+          "agent": "quality",
+          "message": "Verdict: approved.",
+          "data": {
+            "failed": []
+          }
+        }
+      ]
+    }
+  ]
+}
